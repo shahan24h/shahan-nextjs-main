@@ -44,7 +44,7 @@ const Hero = () => {
     {
       icon: FaBrain,
       title: "ML Engineering & NLP",
-      description: "Designing and deploying end-to-end NLP pipelines — from transformer fine-tuning to production model serving.",
+      description: "Designing and deploying end-to-end NLP pipelines, from transformer fine-tuning to production model serving.",
       bullets: [
         "Transformer fine-tuning (DistilBERT, Longformer)",
         "Document classification & OCR pipelines",
@@ -106,7 +106,7 @@ const Hero = () => {
             </h1>
 
             <p className="text-base md:text-lg text-gray-400 mb-4 leading-relaxed max-w-2xl mx-auto">
-              Specializing in NLP, document intelligence, and healthcare analytics — with published research and production systems processing millions of records.
+              Specializing in NLP, document intelligence, and healthcare analytics, with published research and production systems processing millions of records.
             </p>
 
             <div className="flex flex-wrap justify-center gap-2 mb-6">
@@ -138,7 +138,7 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* What I Do — 3 Pillars */}
+          {/* What I Do - 3 Pillars */}
           <div className="animate-slide-up w-full">
             <span className="eyebrow mb-2 block">Capabilities</span>
             <h2 className="text-2xl font-bold mb-6 text-gray-100">

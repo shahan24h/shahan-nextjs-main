@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Briefcase } from 'lucide-react';
 
 export const metadata = {
-  title: 'Case Studies — Shahan Ahmed',
+  title: 'Case Studies | Shahan Ahmed',
   description: 'End-to-end ML case studies covering document intelligence, healthcare analytics, adversarial ML, and public health research.',
 };
 

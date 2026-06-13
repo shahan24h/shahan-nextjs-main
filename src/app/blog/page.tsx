@@ -1,66 +1,170 @@
 import Link from 'next/link';
-import { BookOpen, ArrowLeft } from 'lucide-react';
+import { BookOpen, Calendar, Tag } from 'lucide-react';
+import { format } from 'date-fns';
+import connectDB from '@/lib/db';
+import Blog from '@/models/Blog';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'Blog & Writing — Shahan Ahmed',
-  description: 'Technical walkthroughs, research digests, and industry perspectives on ML engineering, NLP, and healthcare AI.',
+  title: 'Blog | Shahan Ahmed',
+  description: 'Technical walkthroughs, research digests, and perspectives on ML engineering, NLP, and healthcare AI.',
 };
 
-export default function BlogPage() {
+interface BlogPost {
+  _id: string;
+  title: string;
+  slug: string;
+  excerpt?: string;
+  tags: string[];
+  publishDate?: string;
+  createdAt: string;
+}
+
+async function getPosts(): Promise<BlogPost[]> {
+  await connectDB();
+  const posts = await Blog.find({ status: 'published' })
+    .sort({ publishDate: -1, createdAt: -1 })
+    .select('title slug excerpt tags publishDate createdAt')
+    .lean<
+      Array<{
+        _id: unknown;
+        title: string;
+        slug: string;
+        excerpt?: string;
+        tags: string[];
+        publishDate?: Date;
+        createdAt: Date;
+      }>
+    >();
+  return posts.map((p) => ({
+    _id: String(p._id),
+    title: p.title,
+    slug: p.slug,
+    excerpt: p.excerpt,
+    tags: p.tags,
+    publishDate: p.publishDate ? String(p.publishDate) : undefined,
+    createdAt: String(p.createdAt),
+  }));
+}
+
+export default async function BlogPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tag?: string }>;
+}) {
+  const { tag: activeTag } = await searchParams;
+  const posts = await getPosts();
+
+  const allTags = Array.from(new Set(posts.flatMap((p) => p.tags)));
+  const filtered = activeTag ? posts.filter((p) => p.tags.includes(activeTag)) : posts;
+
   return (
-    <main className="min-h-screen bg-gray-900 pt-28 pb-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
-        {/* Back Link */}
-        <Link
-          href="/"
-          className="inline-flex items-center space-x-2 text-gray-400 hover:text-gray-100 transition-colors duration-200 mb-10 group"
-        >
-          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform duration-200" />
-          <span>Back to Home</span>
-        </Link>
+    <main className="min-h-screen bg-gray-950 text-gray-100">
 
-        {/* Header */}
-        <div className="flex items-center space-x-4 mb-8">
-          <div className="p-3 rounded-xl bg-blue-500/10 border border-blue-500/20">
-            <BookOpen className="text-blue-400 w-7 h-7" />
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-100">Blog &amp; Writing</h1>
-        </div>
-
-        {/* Placeholder */}
-        <div className="bg-gray-800 border border-gray-700 rounded-2xl p-10 text-center">
-          <div className="w-16 h-16 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mx-auto mb-6">
-            <BookOpen className="text-blue-400 w-8 h-8" />
-          </div>
-          <h2 className="text-2xl font-semibold text-gray-100 mb-4">Coming Soon</h2>
-          <p className="text-gray-400 leading-relaxed max-w-xl mx-auto">
-            Technical walkthroughs, research digests, and industry perspectives on ML engineering,
-            NLP, and healthcare AI. Check back soon for new posts.
+      {/* Hero */}
+      <section className="border-b border-gray-800 pt-24 pb-12 px-6">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-4">
+            Shahan Ahmed
           </p>
-        </div>
+          <h1 className="text-4xl font-bold text-white mb-3">Blog & Writing</h1>
+          <p className="text-gray-400 max-w-2xl leading-relaxed">
+            Technical walkthroughs, research digests, and perspectives on ML engineering, NLP, and
+            healthcare AI.
+          </p>
 
-        {/* Topics Preview */}
-        <div className="mt-12">
-          <h3 className="text-lg font-semibold text-gray-300 mb-6">Topics I&apos;ll be covering:</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
-              "Transformer fine-tuning in production",
-              "PySpark & Databricks best practices",
-              "Healthcare ML — ethics & privacy",
-              "Federated learning for public health",
-              "Adversarial ML & model robustness",
-              "MLflow experiment tracking at scale",
-            ].map((topic, index) => (
-              <div
-                key={index}
-                className="flex items-center space-x-3 p-4 rounded-xl bg-gray-800 border border-gray-700"
-              >
-                <span className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></span>
-                <span className="text-gray-300 text-sm">{topic}</span>
+          {/* Stats */}
+          <div className="flex gap-8 mt-10 pt-8 border-t border-gray-800">
+            <div>
+              <p className="text-2xl font-bold text-white">{posts.length}</p>
+              <p className="text-xs text-gray-500 mt-0.5">Published posts</p>
+            </div>
+            {allTags.length > 0 && (
+              <div>
+                <p className="text-2xl font-bold text-white">{allTags.length}</p>
+                <p className="text-xs text-gray-500 mt-0.5">Topics covered</p>
               </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <div className="max-w-4xl mx-auto px-6 py-12">
+
+        {/* Tag filter */}
+        {allTags.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-8">
+            <Link
+              href="/blog"
+              className={`px-3 py-1 rounded-full border text-xs font-medium transition-colors ${
+                !activeTag
+                  ? 'border-white bg-white text-gray-900'
+                  : 'border-gray-700 bg-gray-900 text-gray-400 hover:border-gray-500 hover:text-gray-200'
+              }`}
+            >
+              All
+            </Link>
+            {allTags.map((t) => (
+              <Link
+                key={t}
+                href={activeTag === t ? '/blog' : `/blog?tag=${encodeURIComponent(t)}`}
+                className={`px-3 py-1 rounded-full border text-xs font-medium transition-colors ${
+                  activeTag === t
+                    ? 'border-blue-500 bg-blue-500/10 text-blue-400'
+                    : 'border-gray-700 bg-gray-900 text-gray-400 hover:border-gray-500 hover:text-gray-200'
+                }`}
+              >
+                {t}
+              </Link>
             ))}
           </div>
-        </div>
+        )}
+
+        {filtered.length === 0 ? (
+          <div className="text-center py-20 border border-gray-800 rounded-xl bg-gray-900">
+            <BookOpen className="w-10 h-10 text-gray-700 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-white mb-2">
+              {posts.length === 0 ? 'No posts yet' : 'No posts in this topic'}
+            </h2>
+            <p className="text-gray-500 text-sm">
+              {posts.length === 0
+                ? 'Check back soon for new writing.'
+                : 'Try a different tag or view all posts.'}
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-0 divide-y divide-gray-800 border border-gray-800 rounded-xl overflow-hidden">
+            {filtered.map((post) => (
+              <Link
+                key={post._id}
+                href={`/blog/${post.slug}`}
+                className="flex flex-col gap-2 px-6 py-5 bg-gray-900 hover:bg-gray-800/60 transition-colors group"
+              >
+                <h2 className="text-base font-semibold text-white group-hover:text-blue-400 transition-colors leading-snug">
+                  {post.title}
+                </h2>
+                {post.excerpt && (
+                  <p className="text-sm text-gray-400 leading-relaxed line-clamp-2">
+                    {post.excerpt}
+                  </p>
+                )}
+                <div className="flex flex-wrap items-center gap-3 text-xs text-gray-600 mt-0.5">
+                  <span className="flex items-center gap-1">
+                    <Calendar className="w-3 h-3" />
+                    {format(new Date(post.publishDate || post.createdAt), 'MMM d, yyyy')}
+                  </span>
+                  {post.tags.map((t) => (
+                    <span key={t} className="flex items-center gap-1">
+                      <Tag className="w-3 h-3" />
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );

@@ -241,6 +241,54 @@ class ApiClient {
     });
   }
 
+  // Blog endpoints
+  async getBlogPosts(params?: { all?: boolean; tag?: string }) {
+    const searchParams = new URLSearchParams();
+    if (params?.all) searchParams.append('all', 'true');
+    if (params?.tag) searchParams.append('tag', params.tag);
+    const qs = searchParams.toString();
+    return this.request(`/blog${qs ? `?${qs}` : ''}`);
+  }
+
+  async getBlogPost(id: string) {
+    return this.request(`/blog/${id}`);
+  }
+
+  async createBlogPost(data: {
+    title: string;
+    content: string;
+    excerpt?: string;
+    tags?: string[];
+    status?: string;
+  }) {
+    return this.request('/blog', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateBlogPost(
+    id: string,
+    data: {
+      title?: string;
+      content?: string;
+      excerpt?: string;
+      tags?: string[];
+      status?: string;
+    }
+  ) {
+    return this.request(`/blog/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteBlogPost(id: string) {
+    return this.request(`/blog/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
   // Image upload
   async uploadImage(formData: FormData) {
     const token = localStorage.getItem('accessToken');

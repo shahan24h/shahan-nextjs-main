@@ -40,7 +40,7 @@ const CaseStudiesSection = () => {
           <span className="eyebrow mb-3 block">Featured Work</span>
           <h2 className="text-4xl font-bold text-gray-100 mb-4">Case Studies</h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Real-world ML systems built end-to-end — from problem framing to production deployment.
+            Real-world ML systems built end-to-end, from problem framing to production deployment.
           </p>
         </div>
 

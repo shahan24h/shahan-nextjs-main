@@ -10,6 +10,7 @@ import {
   Clock,
   Settings,
   LogOut,
+  BookOpen,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -22,6 +23,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
 
   const navItems = [
     { to: '/dashboard', icon: LayoutDashboard, label: 'Overview' },
+    { to: '/dashboard/blog', icon: BookOpen, label: 'Blog' },
     { to: '/dashboard/projects', icon: Briefcase, label: 'Projects' },
     { to: '/dashboard/messages', icon: MessageSquare, label: 'Messages' },
     { to: '/dashboard/appointments', icon: Calendar, label: 'Appointments' },

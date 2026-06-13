@@ -244,7 +244,7 @@ const PhishingRobustnessDashboard: React.FC = () => {
               <div>
                 <h2 className="text-2xl font-bold text-purple-900">Robustness Summary</h2>
                 <p className="mt-1 text-sm text-slate-700 font-medium">
-                  Same model, same train split — evaluated under clean vs adversarially obfuscated
+                  Same model, same train split, evaluated under clean vs adversarially obfuscated
                   phishing emails to measure robustness.
                 </p>
               </div>

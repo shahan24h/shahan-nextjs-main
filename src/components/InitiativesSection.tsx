@@ -14,7 +14,7 @@ const initiatives = [
   {
     icon: FaGlobe,
     title: "OpenDataBD",
-    description: "Open data platform for Bangladesh — making public data accessible.",
+    description: "Open data platform for Bangladesh, making public data accessible.",
     iconColor: "text-purple-400",
     bgColor: "bg-purple-500/10",
     borderColor: "border-purple-500/20",
@@ -57,7 +57,7 @@ const InitiativesSection = () => {
                 <div className="mb-4">
                   {initiative.logoImg ? (
                     <Image
-                      src={initiative.logoImg}
+                      src={initiative.logoImg!}
                       alt={initiative.title}
                       width={80}
                       height={48}

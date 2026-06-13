@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { ArrowLeft, Download } from 'lucide-react';
 
 export const metadata = {
-  title: 'Resume — Shahan Ahmed',
+  title: 'Resume | Shahan Ahmed',
   description: 'Resume of Shahan Ahmed, Data Scientist & ML Engineer.',
 };
 

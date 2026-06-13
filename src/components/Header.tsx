@@ -36,7 +36,7 @@ const Header = () => {
 
   const navItems = [
     { path: "/", label: "Home", icon: Home },
-    { path: "/case-studies", label: "Case Studies", icon: Briefcase },
+    { path: "/project", label: "Products", icon: Briefcase },
     { path: "/blog", label: "Blog", icon: BookOpen },
     { path: "/research", label: "Research", icon: FlaskConical },
     { path: "/contact", label: "Contact", icon: MessageCircle },
@@ -58,7 +58,7 @@ const Header = () => {
               </Link>
             </div>
 
-            {/* Desktop Navigation — centered */}
+            {/* Desktop Navigation - centered */}
             <nav className="hidden lg:flex items-center space-x-1 absolute left-1/2 -translate-x-1/2">
               {navItems.map((item) => {
                 const Icon = item.icon;

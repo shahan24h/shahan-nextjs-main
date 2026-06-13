@@ -23,7 +23,7 @@ const specialtyData: Record<string, {
     borderColor: 'border-orange-500/30',
     tagline: 'Turning raw data into intelligent systems that learn, predict, and adapt.',
     overview:
-      'As a Data Scientist, I design and deploy end-to-end machine learning pipelines — from exploratory data analysis and feature engineering all the way through model training, evaluation, and production deployment. I work across supervised, unsupervised, and deep learning paradigms to solve real-world classification, regression, clustering, and NLP challenges.',
+      'As a Data Scientist, I design and deploy end-to-end machine learning pipelines, from exploratory data analysis and feature engineering all the way through model training, evaluation, and production deployment. I work across supervised, unsupervised, and deep learning paradigms to solve real-world classification, regression, clustering, and NLP challenges.',
     skills: [
       'Machine Learning (supervised & unsupervised)',
       'Deep Learning & Neural Networks',
@@ -95,7 +95,7 @@ const specialtyData: Record<string, {
     borderColor: 'border-green-500/30',
     tagline: 'Transforming large datasets into clear, decision-ready insights.',
     overview:
-      'As a Data Analyst, I specialize in querying, cleaning, and analyzing structured datasets to support business decisions. I identify trends, anomalies, and performance drivers across operational data — then communicate findings to both technical and non-technical audiences through clear visualizations and written summaries.',
+      'As a Data Analyst, I specialize in querying, cleaning, and analyzing structured datasets to support business decisions. I identify trends, anomalies, and performance drivers across operational data, then communicate findings to both technical and non-technical audiences through clear visualizations and written summaries.',
     skills: [
       'SQL (complex joins, window functions, CTEs)',
       'Data Cleaning & Transformation (ETL)',
@@ -129,7 +129,7 @@ const specialtyData: Record<string, {
     color: 'text-yellow-500',
     bgColor: 'bg-yellow-500/10',
     borderColor: 'border-yellow-500/30',
-    tagline: 'Visualizing what matters — turning metrics into decisions at a glance.',
+    tagline: 'Visualizing what matters: turning metrics into decisions at a glance.',
     overview:
       'As a Business Intelligence Analyst, I design and maintain dashboards, reports, and data models that give organizations a clear, real-time view of their performance. I bridge the gap between raw data and executive strategy by building self-serve analytics tools that empower teams to answer their own questions without needing a data team every time.',
     skills: [
@@ -150,7 +150,7 @@ const specialtyData: Record<string, {
       },
       {
         heading: 'Self-Serve Analytics Platform',
-        body: 'Implemented a Looker-based self-serve reporting environment, enabling non-technical teams to slice and explore data independently — cutting ad hoc data requests by 40%.',
+        body: 'Implemented a Looker-based self-serve reporting environment, enabling non-technical teams to slice and explore data independently, cutting ad hoc data requests by 40%.',
       },
       {
         heading: 'Revenue Forecasting Reports',
@@ -167,7 +167,7 @@ const specialtyData: Record<string, {
     borderColor: 'border-purple-500/30',
     tagline: 'Understanding markets, customers, and competitors to drive smarter strategy.',
     overview:
-      'As a Market Researcher, I gather, analyze, and synthesize intelligence on industries, competitors, and customer segments. I turn market signals into strategic insights — helping organizations understand where opportunities lie, what customers actually want, and how to position effectively against the competition.',
+      'As a Market Researcher, I gather, analyze, and synthesize intelligence on industries, competitors, and customer segments. I turn market signals into strategic insights, helping organizations understand where opportunities lie, what customers actually want, and how to position effectively against the competition.',
     skills: [
       'Competitive Intelligence & Benchmarking',
       'Customer Segmentation & Persona Development',
