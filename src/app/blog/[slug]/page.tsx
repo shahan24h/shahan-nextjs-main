@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic';
-
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Calendar, Tag } from 'lucide-react';
@@ -7,48 +5,15 @@ import { format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type { Components } from 'react-markdown';
-import connectDB from '@/lib/db';
-import Blog from '@/models/Blog';
+import { getAllBlogPosts, getBlogPostBySlug } from '@/data/blogPosts';
 
-interface Post {
-  _id: string;
-  title: string;
-  slug: string;
-  content: string;
-  excerpt?: string;
-  tags: string[];
-  publishDate?: string;
-  createdAt: string;
-}
-
-async function getPost(slug: string): Promise<Post | null> {
-  await connectDB();
-  const post = await Blog.findOne({ slug, status: 'published' }).lean<{
-    _id: unknown;
-    title: string;
-    slug: string;
-    content: string;
-    excerpt?: string;
-    tags: string[];
-    publishDate?: Date;
-    createdAt: Date;
-  }>();
-  if (!post) return null;
-  return {
-    _id: String(post._id),
-    title: post.title,
-    slug: post.slug,
-    content: post.content,
-    excerpt: post.excerpt,
-    tags: post.tags,
-    publishDate: post.publishDate ? String(post.publishDate) : undefined,
-    createdAt: String(post.createdAt),
-  };
+export function generateStaticParams() {
+  return getAllBlogPosts().map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = await getPost(slug);
+  const post = getBlogPostBySlug(slug);
   if (!post) return { title: 'Post Not Found' };
   return {
     title: `${post.title} | Shahan Ahmed`,
@@ -111,7 +76,7 @@ const mdComponents: Components = {
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = await getPost(slug);
+  const post = getBlogPostBySlug(slug);
   if (!post) notFound();
 
   const wordCount = post.content.trim().split(/\s+/).length;
@@ -120,7 +85,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   return (
     <main className="min-h-screen bg-gray-950 text-gray-100">
       <div className="max-w-2xl mx-auto px-6 pt-28 pb-20">
-
         {/* Back */}
         <Link
           href="/blog"
