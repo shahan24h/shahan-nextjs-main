@@ -105,25 +105,9 @@ const Hero = () => {
               Shahan Ahmed
             </h1>
 
-            <p className="text-base md:text-lg text-gray-400 mb-4 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-gray-400 mb-6 leading-relaxed max-w-2xl mx-auto">
               Specializing in NLP, document intelligence, and healthcare analytics, with published research and production systems processing millions of records.
             </p>
-
-            <div className="flex flex-wrap justify-center gap-2 mb-6">
-              {/* Conduent pill with logo */}
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-800 border border-gray-700 text-xs text-gray-400">
-                <Image src="/logo/conduent-logo.png" alt="Conduent" width={14} height={14} className="object-contain" />
-                Building NLP systems @ Conduent
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-800 border border-gray-700 text-xs text-gray-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0" />
-                Federated learning research
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-800 border border-gray-700 text-xs text-gray-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
-                ML tutorials on YouTube
-              </span>
-            </div>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
