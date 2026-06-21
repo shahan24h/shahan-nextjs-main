@@ -99,13 +99,15 @@ const Hero = () => {
         <div className="text-center">
           {/* Header Section */}
           <div className="mb-8 animate-fade-in max-w-4xl mx-auto">
-            <span className="eyebrow mb-3 block">Data Scientist & ML Engineer</span>
+            <span className="mb-3 block text-xs font-extrabold uppercase tracking-[0.28em] text-blue-200 drop-shadow-sm">
+              Data Scientist & ML Engineer
+            </span>
 
-            <h1 className="text-5xl md:text-6xl font-extrabold mb-4 text-gradient">
+            <h1 className="mb-4 bg-gradient-to-r from-white via-blue-100 to-blue-300 bg-clip-text text-5xl font-extrabold text-transparent drop-shadow-[0_2px_18px_rgba(96,165,250,0.28)] md:text-6xl">
               Shahan Ahmed
             </h1>
 
-            <p className="text-base md:text-lg text-gray-400 mb-6 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-gray-300 mb-6 leading-relaxed max-w-2xl mx-auto">
               Specializing in NLP, document intelligence, and healthcare analytics, with published research and production systems processing millions of records.
             </p>
 
