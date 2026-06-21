@@ -1,52 +1,12 @@
 import Link from 'next/link';
 import { BookOpen, Calendar, Tag } from 'lucide-react';
 import { format } from 'date-fns';
-import connectDB from '@/lib/db';
-import Blog from '@/models/Blog';
-
-export const dynamic = 'force-dynamic';
+import { getAllBlogPosts, getAllBlogTags } from '@/data/blogPosts';
 
 export const metadata = {
   title: 'Blog | Shahan Ahmed',
   description: 'Technical walkthroughs, research digests, and perspectives on ML engineering, NLP, and healthcare AI.',
 };
-
-interface BlogPost {
-  _id: string;
-  title: string;
-  slug: string;
-  excerpt?: string;
-  tags: string[];
-  publishDate?: string;
-  createdAt: string;
-}
-
-async function getPosts(): Promise<BlogPost[]> {
-  await connectDB();
-  const posts = await Blog.find({ status: 'published' })
-    .sort({ publishDate: -1, createdAt: -1 })
-    .select('title slug excerpt tags publishDate createdAt')
-    .lean<
-      Array<{
-        _id: unknown;
-        title: string;
-        slug: string;
-        excerpt?: string;
-        tags: string[];
-        publishDate?: Date;
-        createdAt: Date;
-      }>
-    >();
-  return posts.map((p) => ({
-    _id: String(p._id),
-    title: p.title,
-    slug: p.slug,
-    excerpt: p.excerpt,
-    tags: p.tags,
-    publishDate: p.publishDate ? String(p.publishDate) : undefined,
-    createdAt: String(p.createdAt),
-  }));
-}
 
 export default async function BlogPage({
   searchParams,
@@ -54,14 +14,12 @@ export default async function BlogPage({
   searchParams: Promise<{ tag?: string }>;
 }) {
   const { tag: activeTag } = await searchParams;
-  const posts = await getPosts();
-
-  const allTags = Array.from(new Set(posts.flatMap((p) => p.tags)));
+  const posts = getAllBlogPosts();
+  const allTags = getAllBlogTags();
   const filtered = activeTag ? posts.filter((p) => p.tags.includes(activeTag)) : posts;
 
   return (
     <main className="min-h-screen bg-gray-950 text-gray-100">
-
       {/* Hero */}
       <section className="border-b border-gray-800 pt-24 pb-12 px-6">
         <div className="max-w-4xl mx-auto">
@@ -70,8 +28,8 @@ export default async function BlogPage({
           </p>
           <h1 className="text-4xl font-bold text-white mb-3">Blog & Writing</h1>
           <p className="text-gray-400 max-w-2xl leading-relaxed">
-            Technical walkthroughs, research digests, and perspectives on ML engineering, NLP, and
-            healthcare AI.
+            Technical walkthroughs, research notes, and practical lessons from ML engineering,
+            NLP, healthcare analytics, and computational social science.
           </p>
 
           {/* Stats */}
@@ -91,7 +49,6 @@ export default async function BlogPage({
       </section>
 
       <div className="max-w-4xl mx-auto px-6 py-12">
-
         {/* Tag filter */}
         {allTags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-8">
