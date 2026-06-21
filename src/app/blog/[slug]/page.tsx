@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, Tag } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, Tag } from 'lucide-react';
 import { format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -23,55 +23,65 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 const mdComponents: Components = {
   h1: ({ children }) => (
-    <h1 className="text-3xl font-bold text-white mt-10 mb-4 leading-tight">{children}</h1>
+    <h1 className="mt-12 mb-5 font-serif text-4xl font-semibold leading-tight tracking-tight text-[#191919]">
+      {children}
+    </h1>
   ),
   h2: ({ children }) => (
-    <h2 className="text-2xl font-bold text-white mt-8 mb-3 leading-tight">{children}</h2>
+    <h2 className="mt-11 mb-4 font-serif text-3xl font-semibold leading-tight tracking-tight text-[#191919]">
+      {children}
+    </h2>
   ),
   h3: ({ children }) => (
-    <h3 className="text-xl font-semibold text-white mt-6 mb-2">{children}</h3>
+    <h3 className="mt-8 mb-3 text-xl font-bold text-[#191919]">{children}</h3>
   ),
   p: ({ children }) => (
-    <p className="text-gray-300 leading-relaxed mb-4">{children}</p>
+    <p className="mb-6 font-serif text-[21px] leading-[1.75] text-[#292929]">
+      {children}
+    </p>
   ),
   ul: ({ children }) => (
-    <ul className="list-disc list-inside text-gray-300 space-y-1.5 mb-4 ml-2">{children}</ul>
+    <ul className="mb-7 ml-6 list-disc space-y-3 font-serif text-[21px] leading-[1.7] text-[#292929]">
+      {children}
+    </ul>
   ),
   ol: ({ children }) => (
-    <ol className="list-decimal list-inside text-gray-300 space-y-1.5 mb-4 ml-2">{children}</ol>
+    <ol className="mb-7 ml-6 list-decimal space-y-3 font-serif text-[21px] leading-[1.7] text-[#292929]">
+      {children}
+    </ol>
   ),
-  li: ({ children }) => <li className="text-gray-300 leading-relaxed">{children}</li>,
+  li: ({ children }) => <li className="pl-1">{children}</li>,
   blockquote: ({ children }) => (
-    <blockquote className="border-l-4 border-blue-500 pl-4 my-4 text-gray-400 italic">
+    <blockquote className="my-8 border-l-4 border-[#242424] pl-5 font-serif text-2xl italic leading-relaxed text-[#4b463f]">
       {children}
     </blockquote>
   ),
   code: ({ className, children }) => {
     const isBlock = !!className;
     return isBlock ? (
-      <code className="block bg-gray-800 border border-gray-700 text-blue-200 p-4 rounded-lg text-sm font-mono overflow-x-auto mb-4 whitespace-pre">
+      <code className="mb-6 block overflow-x-auto rounded-xl border border-[#ded6c9] bg-[#fffdf8] p-5 text-sm leading-7 text-[#242424] shadow-sm">
         {children}
       </code>
     ) : (
-      <code className="bg-gray-800 text-blue-300 px-1.5 py-0.5 rounded text-sm font-mono">
+      <code className="rounded bg-[#f0e9dc] px-1.5 py-0.5 text-[0.85em] text-[#242424]">
         {children}
       </code>
     );
   },
-  pre: ({ children }) => <div className="my-4">{children}</div>,
+  pre: ({ children }) => <div className="my-6">{children}</div>,
   a: ({ href, children }) => (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-blue-400 hover:text-blue-300 underline transition-colors"
+      className="text-[#6b4eff] underline decoration-[#6b4eff]/30 underline-offset-4 transition-colors hover:text-[#4a34d4]"
     >
       {children}
     </a>
   ),
-  strong: ({ children }) => <strong className="text-white font-semibold">{children}</strong>,
-  em: ({ children }) => <em className="text-gray-300 italic">{children}</em>,
-  hr: () => <hr className="border-gray-800 my-8" />,
+  strong: ({ children }) => <strong className="font-bold text-[#191919]">{children}</strong>,
+  em: ({ children }) => <em className="italic text-[#292929]">{children}</em>,
+  hr: () => <hr className="my-10 border-[#ded6c9]" />,
 };
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -83,60 +93,88 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const readTime = Math.max(1, Math.round(wordCount / 200));
 
   return (
-    <main className="min-h-screen bg-gray-950 text-gray-100">
-      <div className="max-w-2xl mx-auto px-6 pt-28 pb-20">
-        {/* Back */}
+    <main className="min-h-screen bg-[#f7f4ed] text-[#242424]">
+      <article className="mx-auto max-w-3xl px-6 pt-28 pb-24">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-gray-300 transition-colors mb-10 group"
+          className="mb-12 inline-flex items-center gap-2 rounded-full border border-[#d0c7b8] bg-[#fffdf8] px-4 py-2 text-sm font-semibold text-[#5f5a52] transition-colors hover:border-[#242424] hover:text-[#242424]"
         >
-          <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
+          <ArrowLeft className="h-4 w-4" />
           Back to Blog
         </Link>
 
-        {/* Header */}
-        <header className="mb-10 pb-8 border-b border-gray-800">
-          <h1 className="text-3xl font-bold text-white leading-tight mb-4">{post.title}</h1>
-          {post.excerpt && (
-            <p className="text-gray-400 text-lg leading-relaxed mb-5">{post.excerpt}</p>
-          )}
-          <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500">
-            <span className="flex items-center gap-1">
-              <Calendar className="w-3.5 h-3.5" />
-              {format(new Date(post.publishDate || post.createdAt), 'MMMM d, yyyy')}
-            </span>
-            <span>{readTime} min read</span>
+        <header className="border-b border-[#ded6c9] pb-10">
+          <div className="mb-7 flex flex-wrap gap-2">
             {post.tags.map((t) => (
               <Link
                 key={t}
                 href={`/blog?tag=${encodeURIComponent(t)}`}
-                className="flex items-center gap-1 hover:text-gray-300 transition-colors"
+                className="inline-flex items-center gap-1 rounded-full bg-[#f0e9dc] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#6b5f52] transition-colors hover:bg-[#e8decc]"
               >
-                <Tag className="w-3 h-3" />
+                <Tag className="h-3 w-3" />
                 {t}
               </Link>
             ))}
           </div>
+
+          <h1 className="font-serif text-5xl font-semibold leading-[1.06] tracking-tight text-[#191919] md:text-6xl">
+            {post.title}
+          </h1>
+
+          {post.excerpt && (
+            <p className="mt-6 text-xl leading-8 text-[#5f5a52] md:text-2xl md:leading-9">
+              {post.excerpt}
+            </p>
+          )}
+
+          <div className="mt-8 flex items-center gap-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#242424] font-serif text-xl font-semibold text-white">
+              S
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-[#242424]">Shahan Ahmed</p>
+              <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-[#7c7163]">
+                <span className="flex items-center gap-1.5">
+                  <Calendar className="h-4 w-4" />
+                  {format(new Date(post.publishDate || post.createdAt), 'MMMM d, yyyy')}
+                </span>
+                <span>·</span>
+                <span className="flex items-center gap-1.5">
+                  <Clock className="h-4 w-4" />
+                  {readTime} min read
+                </span>
+              </div>
+            </div>
+          </div>
         </header>
 
-        {/* Content */}
-        <article>
+        <div className="pt-10">
           <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
             {post.content}
           </ReactMarkdown>
-        </article>
+        </div>
 
-        {/* Footer */}
-        <footer className="mt-16 pt-8 border-t border-gray-800">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors group"
-          >
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-            All posts
-          </Link>
+        <footer className="mt-16 border-t border-[#ded6c9] pt-8">
+          <div className="rounded-2xl border border-[#ded6c9] bg-[#fffdf8] p-6 shadow-sm">
+            <p className="text-sm font-bold uppercase tracking-[0.22em] text-[#7c7163]">
+              More writing
+            </p>
+            <h2 className="mt-3 font-serif text-2xl font-semibold text-[#191919]">
+              Read more notes from Shahan Ahmed
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-[#5f5a52]">
+              Machine learning, data systems, healthcare analytics, and applied research notes.
+            </p>
+            <Link
+              href="/blog"
+              className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#242424] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#3a3a3a]"
+            >
+              All posts
+              <ArrowLeft className="h-4 w-4 rotate-180" />
+            </Link>
+          </div>
         </footer>
-      </div>
+      </article>
     </main>
   );
 }
