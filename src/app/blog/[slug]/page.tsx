@@ -16,8 +16,47 @@ function getDisplayTitle(title: string) {
   return title === OLD_OCR_TITLE ? UPDATED_OCR_TITLE : title;
 }
 
+function formatOcrEquations(content: string) {
+  return content
+    .replace(
+      '    minimize: lambda / 2 * ||w||^2 + hinge loss',
+      `$$
+\\min_{\\mathbf{w}} \\frac{\\lambda}{2} \\lVert\\mathbf{w}\\rVert^2 + \\frac{1}{n} \\sum_{i=1}^{n} \\max(0, 1 - y_i f(x_i))
+$$`,
+    )
+    .replace(
+      '    margin = y * (w dot x)',
+      `$$
+\\text{margin} = y f(x) = y(\\mathbf{w}^{T}\\mathbf{x})
+$$`,
+    )
+    .replace(
+      'If margin >= 1, the example is correctly classified with enough margin. If margin < 1, the example violates the margin and contributes to the update.',
+      `If the margin satisfies
+
+$$
+\\text{margin} \\geq 1
+$$
+
+the example is correctly classified with enough margin. If
+
+$$
+\\text{margin} < 1
+$$
+
+the example violates the margin and contributes to the update.`,
+    )
+    .replace(
+      '    eta_t = 1 / (lambda * t)',
+      `$$
+\\eta_t = \\frac{1}{\\lambda t}
+$$`,
+    );
+}
+
 function getDisplayContent(content: string) {
-  return content.replace(`# ${OLD_OCR_TITLE}\n\n`, '');
+  const withoutDuplicateTitle = content.replace(`# ${OLD_OCR_TITLE}\n\n`, '');
+  return formatOcrEquations(withoutDuplicateTitle);
 }
 
 export function generateStaticParams() {
@@ -219,14 +258,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         )}
 
         <div className="pt-10">
-  <ReactMarkdown
-    remarkPlugins={[remarkGfm, remarkMath]}
-    rehypePlugins={[rehypeKatex]}
-    components={mdComponents}
-  >
-    {displayContent}
-  </ReactMarkdown>
-</div>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm, remarkMath]}
+            rehypePlugins={[rehypeKatex]}
+            components={mdComponents}
+          >
+            {displayContent}
+          </ReactMarkdown>
+        </div>
 
         <footer className="mt-16 border-t border-[#ded6c9] pt-8">
           <div className="rounded-2xl border border-[#ded6c9] bg-[#fffdf8] p-6 shadow-sm">
