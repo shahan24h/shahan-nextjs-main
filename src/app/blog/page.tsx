@@ -71,10 +71,6 @@ export default async function BlogPage({
       </nav>
 
       <section className="mx-auto max-w-6xl px-6 py-14">
-        <div className="mb-4 text-right font-serif text-sm tracking-[0.18em] text-[#2f3e4e]">
-          ISSN 2026-0622
-        </div>
-
         {/* Editorial introduction */}
         <div className="grid gap-12 lg:grid-cols-[1fr_22rem] lg:items-start">
           <div className="max-w-3xl">
