@@ -19,6 +19,7 @@ import {
   BarChart3,
   PieChart,
   ChevronRight,
+  Search,
 } from 'lucide-react';
 import { PortfolioSchema } from '@/components/StructuredData';
 
@@ -63,7 +64,7 @@ const PRODUCTS: Product[] = [
       'End-to-end ML pipeline on Databricks that flags high-risk patients from CMS Medicare claims. Delta Lake medallion architecture, MLflow tracking, and 100% recall — no critical cases missed.',
     type: 'ML Pipeline',
     typeIcon: <Cpu className="w-3.5 h-3.5" />,
-    typeColor: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
+    typeColor: 'text-blue-700 bg-blue-50 border-blue-100',
     tech: ['PySpark', 'Delta Lake', 'MLflow', 'scikit-learn'],
     metric: { value: '93%', label: 'Accuracy · 100% Recall' },
     dataUsed: {
@@ -94,7 +95,7 @@ const PRODUCTS: Product[] = [
       'AI agent that scrapes businesses, scores leads with Claude Haiku, audits websites, generates PDF reports, and sends personalized cold emails. Zero manual steps. Runs on a daily schedule.',
     type: 'AI Agent',
     typeIcon: <Bot className="w-3.5 h-3.5" />,
-    typeColor: 'text-violet-400 bg-violet-400/10 border-violet-400/20',
+    typeColor: 'text-violet-700 bg-violet-50 border-violet-100',
     tech: ['Python', 'Claude Haiku', 'Playwright', 'SQLite'],
     metric: { value: '64+', label: 'Emails Sent' },
     dataUsed: {
@@ -128,7 +129,7 @@ const PRODUCTS: Product[] = [
       'Assessment of 19,906 court cases in Austin covering operational triage, equity monitoring, fiscal impact sizing ($263K savings), and prioritized policy recommendations for city leadership.',
     type: 'Analytics',
     typeIcon: <BarChart3 className="w-3.5 h-3.5" />,
-    typeColor: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20',
+    typeColor: 'text-emerald-700 bg-emerald-50 border-emerald-100',
     tech: ['Python', 'Pandas', 'Seaborn', 'Statistical Modeling'],
     metric: { value: '$263K', label: 'Identified Savings' },
     dataUsed: {
@@ -159,7 +160,7 @@ const PRODUCTS: Product[] = [
       'Analyzed 1,743 POS transactions across 10 locations. ML models hit 100% accuracy; revenue analysis surfaced $4–5K in monthly upside. Delivered as a live interactive React dashboard.',
     type: 'BI Dashboard',
     typeIcon: <PieChart className="w-3.5 h-3.5" />,
-    typeColor: 'text-amber-400 bg-amber-400/10 border-amber-400/20',
+    typeColor: 'text-amber-700 bg-amber-50 border-amber-100',
     tech: ['React', 'Python', 'Random Forest', 'Recharts'],
     metric: { value: '100%', label: 'Model Accuracy' },
     dataUsed: {
@@ -189,22 +190,22 @@ const ACCESS_CONFIG: Record<AccessLevel, { label: string; icon: React.ReactNode;
   Public: {
     label: 'Public',
     icon: <Globe className="w-3.5 h-3.5" />,
-    color: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20',
+    color: 'text-emerald-700 bg-emerald-50 border-emerald-100',
   },
   Synthetic: {
     label: 'Synthetic / Public',
     icon: <Globe className="w-3.5 h-3.5" />,
-    color: 'text-sky-400 bg-sky-400/10 border-sky-400/20',
+    color: 'text-sky-700 bg-sky-50 border-sky-100',
   },
   Research: {
     label: 'Research Dataset',
     icon: <BookOpen className="w-3.5 h-3.5" />,
-    color: 'text-violet-400 bg-violet-400/10 border-violet-400/20',
+    color: 'text-violet-700 bg-violet-50 border-violet-100',
   },
   Proprietary: {
     label: 'Proprietary',
     icon: <Lock className="w-3.5 h-3.5" />,
-    color: 'text-rose-400 bg-rose-400/10 border-rose-400/20',
+    color: 'text-rose-700 bg-rose-50 border-rose-100',
   },
 };
 
@@ -215,35 +216,106 @@ export default function ProductsPage() {
   const selected = PRODUCTS.find((p) => p.id === selectedId) ?? null;
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <main className="min-h-screen bg-[#f2f1ee] text-[#031b35]">
       <PortfolioSchema />
 
-      {/* ── Hero ── */}
-      <section className="pt-24 pb-10 px-6 border-b border-gray-800">
-        <div className="max-w-5xl mx-auto">
-          <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-3">
-            Portfolio
-          </p>
-          <h1 className="text-4xl font-bold text-white mb-3">Products</h1>
-          <p className="text-gray-400 max-w-lg">
-            End-to-end systems built from raw data to working output — pipelines, agents, dashboards, and analytics tools.
-          </p>
+      {/* Journal masthead */}
+      <section className="bg-[#061a33] px-6 pt-20 pb-16 text-white">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-8">
+          <div>
+            <p className="mb-5 text-xs font-bold uppercase tracking-[0.34em] text-[#c8d3df]">
+              Shahan Ahmed / Data Products & Systems
+            </p>
+            <h1 className="font-serif text-5xl font-light uppercase tracking-[0.18em] text-white md:text-6xl lg:text-7xl">
+              Products
+            </h1>
+          </div>
+
+          <div className="relative hidden h-24 w-28 md:block" aria-hidden="true">
+            <div className="absolute right-0 top-0 h-20 w-20 rotate-45 border border-white/40 bg-white/10" />
+            <div className="absolute right-7 top-7 h-14 w-14 rotate-45 bg-white/25" />
+            <div className="absolute right-10 top-10 h-6 w-6 bg-white" />
+          </div>
         </div>
       </section>
 
-      {/* ── Split layout ── */}
-      <div className="max-w-5xl mx-auto px-6 py-10">
-        <div className="flex gap-8 items-start">
+      {/* Journal navigation */}
+      <nav className="border-b border-[#d8d4cc] bg-white/90 shadow-sm backdrop-blur">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6">
+          <div className="flex overflow-x-auto text-sm font-semibold text-[#031b35]">
+            <Link href="/blog" className="border-r border-[#e4e0d7] px-5 py-4 hover:bg-[#f2f1ee]">
+              Articles
+            </Link>
+            <Link href="/case-studies" className="border-r border-[#e4e0d7] px-5 py-4 hover:bg-[#f2f1ee]">
+              Case Studies
+            </Link>
+            <Link href="/research" className="border-r border-[#e4e0d7] px-5 py-4 hover:bg-[#f2f1ee]">
+              Research
+            </Link>
+            <Link href="/project" className="border-r border-[#e4e0d7] bg-[#f2f1ee] px-5 py-4 text-[#a00034]">
+              Projects
+            </Link>
+            <Link href="/contact" className="px-5 py-4 hover:bg-[#f2f1ee]">
+              Contact
+            </Link>
+          </div>
+          <Search className="hidden h-5 w-5 text-[#031b35] md:block" />
+        </div>
+      </nav>
 
-          {/* ── Left: list ── */}
+      <section className="mx-auto max-w-6xl px-6 py-14">
+        {/* Editorial introduction */}
+        <div className="grid gap-12 lg:grid-cols-[1fr_22rem] lg:items-start">
+          <div className="max-w-3xl">
+            <h2 className="font-serif text-4xl font-normal leading-tight tracking-wide text-[#a00034] md:text-5xl">
+              From raw data to working systems
+            </h2>
+            <p className="mt-7 max-w-2xl text-lg leading-9 text-[#031b35]">
+              A curated list of data products, machine learning pipelines, AI agents, dashboards, and analytics systems built from raw datasets into usable outputs.
+            </p>
+          </div>
+
+          <aside className="bg-white p-8 shadow-sm">
+            <h3 className="mb-6 font-serif text-3xl font-normal text-[#031b35]">Product index</h3>
+            <div className="space-y-4 text-base font-semibold text-[#031b35]">
+              <div className="flex items-center justify-between border-b border-[#e4e0d7] pb-3">
+                <span>Total products</span>
+                <span className="font-serif text-2xl text-[#a00034]">{PRODUCTS.length}</span>
+              </div>
+              <div className="flex items-center justify-between border-b border-[#e4e0d7] pb-3">
+                <span>ML systems</span>
+                <span className="font-serif text-2xl text-[#a00034]">2</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Dashboards / analytics</span>
+                <span className="font-serif text-2xl text-[#a00034]">2</span>
+              </div>
+            </div>
+            <p className="mt-7 border-t border-[#e4e0d7] pt-5 text-sm leading-6 text-[#34475a]">
+              Select any product to review the dataset, source, size, key fields, and access level.
+            </p>
+          </aside>
+        </div>
+
+        {/* Split layout */}
+        <div className="mt-14 flex gap-8 items-start">
+          {/* Left: list */}
           <div className="flex-1 min-w-0">
-            {/* list header */}
-            <div className="grid grid-cols-[1fr_auto] gap-4 px-4 mb-2">
-              <span className="text-[11px] font-semibold uppercase tracking-widest text-gray-600">Product</span>
-              <span className="text-[11px] font-semibold uppercase tracking-widest text-gray-600">Outcome</span>
+            <div className="mb-6 flex items-end justify-between gap-6">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.26em] text-[#6b6b6b]">
+                  Product library
+                </p>
+                <h2 className="mt-2 font-serif text-4xl font-normal text-[#031b35]">
+                  Built systems
+                </h2>
+              </div>
+              <span className="font-serif text-sm tracking-[0.15em] text-[#34475a]">
+                {PRODUCTS.length} entries
+              </span>
             </div>
 
-            <div className="divide-y divide-gray-800 border border-gray-800 rounded-xl overflow-hidden">
+            <div className="divide-y divide-[#d8d4cc] border-y border-[#d8d4cc]">
               {PRODUCTS.map((p) => (
                 <ProductRow
                   key={p.id}
@@ -255,13 +327,12 @@ export default function ProductsPage() {
             </div>
           </div>
 
-          {/* ── Right: Data Used panel ── */}
-          <div className="hidden lg:block w-[320px] flex-shrink-0">
+          {/* Right: Data Used panel */}
+          <div className="hidden lg:block w-[340px] flex-shrink-0">
             <div className="sticky top-[72px]">
               {selected ? <DataUsedPanel product={selected} /> : <EmptyPanel />}
             </div>
           </div>
-
         </div>
 
         {/* Mobile data panel */}
@@ -270,8 +341,8 @@ export default function ProductsPage() {
             <DataUsedPanel product={selected} />
           </div>
         )}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
 
@@ -289,44 +360,52 @@ function ProductRow({
   return (
     <div
       onClick={onSelect}
-      className={`group flex items-center gap-4 px-4 py-4 cursor-pointer transition-colors duration-150 ${
-        selected ? 'bg-gray-800' : 'bg-gray-900 hover:bg-gray-800/60'
+      className={`group grid cursor-pointer gap-5 py-8 transition-colors md:grid-cols-[9rem_1fr_auto] md:px-5 ${
+        selected ? 'bg-white' : 'hover:bg-white/70'
       }`}
     >
-      {/* type badge */}
-      <span className={`hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-[11px] font-semibold flex-shrink-0 w-[110px] justify-center ${p.typeColor}`}>
-        {p.typeIcon}
-        {p.type}
-      </span>
+      <div className="space-y-3">
+        <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${p.typeColor}`}>
+          {p.typeIcon}
+          {p.type}
+        </span>
+        <div>
+          <p className="font-serif text-3xl font-normal leading-none text-[#031b35]">{p.metric.value}</p>
+          <p className="mt-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
+            {p.metric.label}
+          </p>
+        </div>
+      </div>
 
-      {/* title + tagline */}
-      <div className="flex-1 min-w-0">
-        <p className={`text-sm font-semibold truncate transition-colors ${selected ? 'text-white' : 'text-gray-200 group-hover:text-white'}`}>
+      <div>
+        <h3 className="font-serif text-3xl font-normal leading-tight text-[#a00034] transition-colors group-hover:text-[#6e0024]">
           {p.title}
-        </p>
-        <p className="text-xs text-gray-500 truncate mt-0.5">{p.tagline}</p>
+        </h3>
+        <p className="mt-2 text-base font-semibold leading-7 text-[#031b35]">{p.tagline}</p>
+        <p className="mt-3 max-w-3xl text-sm leading-7 text-[#34475a]">{p.description}</p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {p.tech.map((t) => (
+            <span key={t} className="rounded-full bg-white px-3 py-1 text-xs font-medium text-[#34475a] ring-1 ring-[#d8d4cc]">
+              {t}
+            </span>
+          ))}
+        </div>
       </div>
 
-      {/* metric */}
-      <div className="text-right flex-shrink-0 hidden md:block">
-        <p className="text-sm font-bold text-white">{p.metric.value}</p>
-        <p className="text-[10px] text-gray-600 mt-0.5">{p.metric.label}</p>
+      <div className="flex items-start gap-3 md:justify-end">
+        <Link
+          href={p.slug}
+          target={p.slug.startsWith('http') ? '_blank' : undefined}
+          rel={p.slug.startsWith('http') ? 'noopener noreferrer' : undefined}
+          onClick={(e) => e.stopPropagation()}
+          className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.16em] text-[#031b35] group-hover:text-[#a00034]"
+          title="Explore product"
+        >
+          Explore
+          <ExternalLink className="w-4 h-4" />
+        </Link>
+        <ChevronRight className={`w-5 h-5 flex-shrink-0 transition-all duration-150 ${selected ? 'text-[#a00034] rotate-90' : 'text-[#34475a] group-hover:text-[#a00034]'}`} />
       </div>
-
-      {/* explore link */}
-      <Link
-        href={p.slug}
-        target={p.slug.startsWith('http') ? '_blank' : undefined}
-        rel={p.slug.startsWith('http') ? 'noopener noreferrer' : undefined}
-        onClick={(e) => e.stopPropagation()}
-        className="flex-shrink-0 p-1.5 rounded-lg text-gray-600 hover:text-white hover:bg-gray-700 transition-all"
-        title="Explore product"
-      >
-        <ExternalLink className="w-3.5 h-3.5" />
-      </Link>
-
-      {/* selection indicator */}
-      <ChevronRight className={`w-4 h-4 flex-shrink-0 transition-all duration-150 ${selected ? 'text-blue-400 rotate-90' : 'text-gray-700 group-hover:text-gray-500'}`} />
     </div>
   );
 }
@@ -338,25 +417,25 @@ function DataUsedPanel({ product: p }: { product: Product }) {
   const access = ACCESS_CONFIG[dataUsed.access];
 
   return (
-    <div className="rounded-xl border border-gray-800 bg-gray-900 overflow-hidden">
-      {/* header */}
-      <div className="px-4 py-3 border-b border-gray-800 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Database className="w-3.5 h-3.5 text-gray-500" />
-          <span className="text-[11px] font-bold uppercase tracking-widest text-gray-500">
-            Data Used
+    <div className="border border-[#d8d4cc] bg-white shadow-sm">
+      <div className="border-b border-[#e4e0d7] px-5 py-4">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <Database className="w-4 h-4 text-[#34475a]" />
+            <span className="text-xs font-bold uppercase tracking-[0.22em] text-[#6b6b6b]">
+              Data Used
+            </span>
+          </div>
+          <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[10px] font-semibold ${access.color}`}>
+            {access.icon}
+            {access.label}
           </span>
         </div>
-        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded border text-[10px] font-semibold ${access.color}`}>
-          {access.icon}
-          {access.label}
-        </span>
+        <p className="mt-4 font-serif text-2xl font-normal leading-tight text-[#031b35]">{p.title}</p>
       </div>
 
-      <div className="p-4">
-        <p className="text-sm font-semibold text-white mb-4 leading-snug">{p.title}</p>
-
-        <div className="space-y-3">
+      <div className="p-5">
+        <div className="space-y-4">
           <DataRow icon={<FileText className="w-3.5 h-3.5" />} label="Dataset">
             {dataUsed.dataset}
           </DataRow>
@@ -376,14 +455,14 @@ function DataUsedPanel({ product: p }: { product: Product }) {
           )}
         </div>
 
-        <div className="mt-4 pt-4 border-t border-gray-800">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-600 mb-2">
+        <div className="mt-5 border-t border-[#e4e0d7] pt-5">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.22em] text-[#6b6b6b]">
             Key Fields
           </p>
-          <ul className="space-y-1.5">
+          <ul className="space-y-2">
             {dataUsed.fields.map((f) => (
-              <li key={f} className="flex items-start gap-2 text-xs text-gray-400">
-                <CheckCircle2 className="w-3.5 h-3.5 text-gray-600 flex-shrink-0 mt-0.5" />
+              <li key={f} className="flex items-start gap-2 text-sm leading-6 text-[#34475a]">
+                <CheckCircle2 className="w-4 h-4 text-[#a00034] flex-shrink-0 mt-1" />
                 {f}
               </li>
             ))}
@@ -391,9 +470,9 @@ function DataUsedPanel({ product: p }: { product: Product }) {
         </div>
 
         {dataUsed.notes && (
-          <div className="mt-4 p-3 rounded-lg bg-gray-800 border border-gray-700">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-600 mb-1">Notes</p>
-            <p className="text-xs text-gray-400 leading-relaxed">{dataUsed.notes}</p>
+          <div className="mt-5 border border-[#e4e0d7] bg-[#f8f6f1] p-4">
+            <p className="mb-1 text-xs font-bold uppercase tracking-[0.22em] text-[#6b6b6b]">Notes</p>
+            <p className="text-sm leading-6 text-[#34475a]">{dataUsed.notes}</p>
           </div>
         )}
 
@@ -401,7 +480,7 @@ function DataUsedPanel({ product: p }: { product: Product }) {
           href={p.slug}
           target={p.slug.startsWith('http') ? '_blank' : undefined}
           rel={p.slug.startsWith('http') ? 'noopener noreferrer' : undefined}
-          className="mt-4 flex items-center justify-center gap-2 w-full py-2 rounded-lg bg-gray-800 hover:bg-gray-700 border border-gray-700 text-sm font-medium text-gray-200 hover:text-white transition-colors"
+          className="mt-5 flex w-full items-center justify-center gap-2 bg-[#031b35] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#a00034]"
         >
           Explore Product
           <ArrowRight className="w-4 h-4" />
@@ -415,11 +494,11 @@ function DataUsedPanel({ product: p }: { product: Product }) {
 
 function EmptyPanel() {
   return (
-    <div className="rounded-xl border border-dashed border-gray-800 p-8 text-center">
-      <MousePointerClick className="w-5 h-5 text-gray-700 mx-auto mb-3" />
-      <p className="text-sm font-medium text-gray-500 mb-1">Select a product</p>
-      <p className="text-xs text-gray-700 leading-relaxed">
-        Click any row to see its dataset, source, size, and fields.
+    <div className="border border-dashed border-[#c9c4bb] bg-white/50 p-8 text-center">
+      <MousePointerClick className="w-6 h-6 text-[#a59d91] mx-auto mb-4" />
+      <p className="font-serif text-2xl font-normal text-[#031b35]">Select a product</p>
+      <p className="mt-2 text-sm leading-6 text-[#34475a]">
+        Click any product to see its dataset, source, size, and key fields.
       </p>
     </div>
   );
@@ -429,11 +508,11 @@ function EmptyPanel() {
 
 function DataRow({ icon, label, children }: { icon: React.ReactNode; label: string; children: React.ReactNode }) {
   return (
-    <div className="flex gap-2.5">
-      <div className="mt-0.5 text-gray-700 flex-shrink-0">{icon}</div>
+    <div className="flex gap-3">
+      <div className="mt-1 flex-shrink-0 text-[#a59d91]">{icon}</div>
       <div>
-        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-600">{label}</p>
-        <p className="text-xs text-gray-300 mt-0.5">{children}</p>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6b6b6b]">{label}</p>
+        <p className="mt-1 text-sm leading-6 text-[#031b35]">{children}</p>
       </div>
     </div>
   );
