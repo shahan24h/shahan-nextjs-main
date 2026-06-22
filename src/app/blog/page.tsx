@@ -162,8 +162,10 @@ export default async function BlogPage({
               <p className="text-xs font-bold uppercase tracking-[0.26em] text-[#6b6b6b]">
                 Articles
               </p>
-              <h2 className="mt-2 font-serif text-4xl font-normal text-[#031b35]">
-                {activeTag ? activeTag : 'Recent writing'}
+              <h2 className="mt-2 max-w-4xl font-serif text-3xl font-normal leading-tight text-[#031b35] md:text-4xl">
+                {activeTag
+                  ? activeTag
+                  : 'Comparative Evaluation of BERT, TF-IDF Linear SVM, and Pegasos Optimization for OCR-Based Document Classification'}
               </h2>
             </div>
             <span className="font-serif text-sm tracking-[0.15em] text-[#34475a]">
