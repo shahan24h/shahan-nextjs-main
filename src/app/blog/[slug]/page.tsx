@@ -8,14 +8,14 @@ import type { Components } from 'react-markdown';
 import { getAllBlogPosts, getBlogPostBySlug } from '@/data/blogPosts';
 
 const OLD_OCR_TITLE = 'From BERT to Linear SVM to Pegasos: Building a High-Recall OCR Document Classifier';
-const UPDATED_OCR_TITLE = 'Healthcare Data Classification: The Role of Model Selection in Building a Reliable OCR-Based Text Classification Pipeline';
+const UPDATED_OCR_TITLE = 'The Role of Model Selection';
 
 function getDisplayTitle(title: string) {
   return title === OLD_OCR_TITLE ? UPDATED_OCR_TITLE : title;
 }
 
 function getDisplayContent(content: string) {
-  return content.replace(`# ${OLD_OCR_TITLE}`, `# ${UPDATED_OCR_TITLE}`);
+  return content.replace(`# ${OLD_OCR_TITLE}\n\n`, '');
 }
 
 export function generateStaticParams() {
@@ -119,6 +119,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const displayTitle = getDisplayTitle(post.title);
   const displayContent = getDisplayContent(post.content);
+  const isOcrPost = post.slug === 'from-bert-to-linear-svm-to-pegasos-ocr-document-classifier';
   const wordCount = displayContent.trim().split(/\s+/).length;
   const readTime = Math.max(1, Math.round(wordCount / 200));
 
@@ -177,6 +178,43 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </div>
           </div>
         </header>
+
+        {isOcrPost && (
+          <section className="my-10 rounded-2xl border border-[#ded6c9] bg-[#fffdf8] p-6 shadow-sm">
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#7c7163]">
+              Method guide
+            </p>
+            <h2 className="mt-3 font-serif text-3xl font-semibold text-[#191919]">
+              Short explanation of the algorithms
+            </h2>
+            <div className="mt-6 grid gap-5 md:grid-cols-2">
+              <div>
+                <h3 className="font-semibold text-[#191919]">TF-IDF</h3>
+                <p className="mt-2 text-sm leading-6 text-[#5f5a52]">
+                  TF-IDF converts OCR text into weighted word and phrase features. It gives more importance to terms that are frequent in one document but not common across all documents.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-[#191919]">Linear SVM</h3>
+                <p className="mt-2 text-sm leading-6 text-[#5f5a52]">
+                  SVM is a margin-based classifier. It tries to separate target and non-target documents with the widest possible boundary using hinge loss.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-[#191919]">BERT</h3>
+                <p className="mt-2 text-sm leading-6 text-[#5f5a52]">
+                  BERT is a transformer language model that reads text in context. It performed strongly, but long OCR documents created a token-length limitation.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-[#191919]">Pegasos</h3>
+                <p className="mt-2 text-sm leading-6 text-[#5f5a52]">
+                  Pegasos is a stochastic optimization method for training SVMs. It updates the model using margin-violating examples and a decaying learning rate.
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
 
         <div className="pt-10">
           <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
