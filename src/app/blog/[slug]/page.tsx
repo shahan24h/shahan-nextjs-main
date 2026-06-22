@@ -7,6 +7,17 @@ import remarkGfm from 'remark-gfm';
 import type { Components } from 'react-markdown';
 import { getAllBlogPosts, getBlogPostBySlug } from '@/data/blogPosts';
 
+const OLD_OCR_TITLE = 'From BERT to Linear SVM to Pegasos: Building a High-Recall OCR Document Classifier';
+const UPDATED_OCR_TITLE = 'Healthcare Data Classification: The Role of Model Selection in Building a Reliable OCR-Based Text Classification Pipeline';
+
+function getDisplayTitle(title: string) {
+  return title === OLD_OCR_TITLE ? UPDATED_OCR_TITLE : title;
+}
+
+function getDisplayContent(content: string) {
+  return content.replace(`# ${OLD_OCR_TITLE}`, `# ${UPDATED_OCR_TITLE}`);
+}
+
 export function generateStaticParams() {
   return getAllBlogPosts().map((post) => ({ slug: post.slug }));
 }
@@ -15,9 +26,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post = getBlogPostBySlug(slug);
   if (!post) return { title: 'Post Not Found' };
+  const displayTitle = getDisplayTitle(post.title);
   return {
-    title: `${post.title} | Shahan Ahmed`,
-    description: post.excerpt || `Read ${post.title} by Shahan Ahmed`,
+    title: `${displayTitle} | Shahan Ahmed`,
+    description: post.excerpt || `Read ${displayTitle} by Shahan Ahmed`,
   };
 }
 
@@ -105,7 +117,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const post = getBlogPostBySlug(slug);
   if (!post) notFound();
 
-  const wordCount = post.content.trim().split(/\s+/).length;
+  const displayTitle = getDisplayTitle(post.title);
+  const displayContent = getDisplayContent(post.content);
+  const wordCount = displayContent.trim().split(/\s+/).length;
   const readTime = Math.max(1, Math.round(wordCount / 200));
 
   return (
@@ -134,7 +148,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </div>
 
           <h1 className="font-serif text-5xl font-semibold leading-[1.06] tracking-tight text-[#191919] md:text-6xl">
-            {post.title}
+            {displayTitle}
           </h1>
 
           {post.excerpt && (
@@ -166,7 +180,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
         <div className="pt-10">
           <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
-            {post.content}
+            {displayContent}
           </ReactMarkdown>
         </div>
 
