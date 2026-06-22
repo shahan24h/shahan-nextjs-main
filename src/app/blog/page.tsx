@@ -8,6 +8,13 @@ export const metadata = {
   description: 'Technical walkthroughs, research digests, and perspectives on ML engineering, NLP, and healthcare AI.',
 };
 
+const OLD_OCR_TITLE = 'From BERT to Linear SVM to Pegasos: Building a High-Recall OCR Document Classifier';
+const UPDATED_OCR_TITLE = 'Healthcare Data Classification: The Role of Model Selection in Building a Reliable OCR-Based Text Classification Pipeline';
+
+function getDisplayTitle(title: string) {
+  return title === OLD_OCR_TITLE ? UPDATED_OCR_TITLE : title;
+}
+
 function getReadTime(content: string) {
   const wordCount = content.trim().split(/\s+/).length;
   return Math.max(1, Math.round(wordCount / 200));
@@ -163,9 +170,7 @@ export default async function BlogPage({
                 Articles
               </p>
               <h2 className="mt-2 max-w-4xl font-serif text-3xl font-normal leading-tight text-[#031b35] md:text-4xl">
-                {activeTag
-                  ? activeTag
-                  : 'Healthcare Data Classification: The Role of Model Selection in Building a Reliable OCR-Based Text Classification Pipeline'}
+                {activeTag ? activeTag : UPDATED_OCR_TITLE}
               </h2>
             </div>
             <span className="font-serif text-sm tracking-[0.15em] text-[#34475a]">
@@ -200,7 +205,7 @@ export default async function BlogPage({
 
                   <div>
                     <h3 className="font-serif text-3xl font-normal leading-tight text-[#a00034] transition-colors group-hover:text-[#6e0024]">
-                      {post.title}
+                      {getDisplayTitle(post.title)}
                     </h3>
                     <p className="mt-3 max-w-3xl text-base leading-7 text-[#031b35]">
                       {post.excerpt}
