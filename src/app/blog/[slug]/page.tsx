@@ -4,6 +4,8 @@ import { ArrowLeft, Calendar, Clock, Tag } from 'lucide-react';
 import { format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 import type { Components } from 'react-markdown';
 import { getAllBlogPosts, getBlogPostBySlug } from '@/data/blogPosts';
 
@@ -217,10 +219,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         )}
 
         <div className="pt-10">
-          <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
-            {displayContent}
-          </ReactMarkdown>
-        </div>
+  <ReactMarkdown
+    remarkPlugins={[remarkGfm, remarkMath]}
+    rehypePlugins={[rehypeKatex]}
+    components={mdComponents}
+  >
+    {displayContent}
+  </ReactMarkdown>
+</div>
 
         <footer className="mt-16 border-t border-[#ded6c9] pt-8">
           <div className="rounded-2xl border border-[#ded6c9] bg-[#fffdf8] p-6 shadow-sm">
