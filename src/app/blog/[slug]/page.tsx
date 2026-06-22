@@ -51,6 +51,22 @@ the example violates the margin and contributes to the update.`,
       `$$
 \\eta_t = \\frac{1}{\\lambda t}
 $$`,
+    )
+    .replace(
+      '| eta_t | learning rate at step t |',
+      '| $\\eta_t$ (eta sub t) | learning rate at step $t$ |',
+    )
+    .replace(
+      '| lambda | regularization strength |',
+      '| $\\lambda$ (lambda) | regularization strength |',
+    )
+    .replace(
+      '| t | update step |',
+      '| $t$ | update step |',
+    )
+    .replace(
+      '| Lambda | 1e-5 |',
+      '| $\\lambda$ (lambda) | $10^{-5}$ |',
     );
 }
 
