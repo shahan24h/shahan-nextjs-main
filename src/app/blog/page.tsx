@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 const OLD_OCR_TITLE = 'From BERT to Linear SVM to Pegasos: Building a High-Recall OCR Document Classifier';
-const UPDATED_OCR_TITLE = 'Healthcare Data Classification: The Role of Model Selection in Building a Reliable OCR-Based Text Classification Pipeline';
+const UPDATED_OCR_TITLE = 'The Role of Model Selection';
 
 function getDisplayTitle(title: string) {
   return title === OLD_OCR_TITLE ? UPDATED_OCR_TITLE : title;
