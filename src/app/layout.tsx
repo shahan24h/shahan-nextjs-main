@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import 'katex/dist/katex.min.css'
 import { AuthProvider } from '@/contexts/AuthContext'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -24,6 +25,10 @@ export const metadata: Metadata = genMeta({
     'Data Science Portfolio',
     'NLP',
     'Healthcare Analytics',
+    'Computational Social Scientist',
+    'Computational Sociologists',
+    'Survey Researcher',
+    'Demographer',
     'Adversarial ML',
     'New York Data Scientist',
     'USA ML Engineer',
@@ -32,6 +37,7 @@ export const metadata: Metadata = genMeta({
     'Data Analysis',
     'Research Analyst',
     'BI Analyst',
+    'Computer Scientist',
   ],
   url: defaultSEO.baseUrl,
   type: 'website',
