@@ -131,6 +131,77 @@ export default async function BlogPage({
           </aside>
         </div>
 
+        {/* Participation section */}
+        <section className="mt-14 border-y border-[#d8d4cc] py-10">
+          <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.26em] text-[#6b6b6b]">
+                Participation & Collaborations
+              </p>
+              <h2 className="mt-2 font-serif text-4xl font-normal leading-tight text-[#031b35]">
+                Conferences, meetings, and active research work
+              </h2>
+            </div>
+            <p className="max-w-md text-sm leading-6 text-[#34475a]">
+              A running record of academic programs, public presentations, and collaborative research initiatives.
+            </p>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-3">
+            <div className="bg-white p-6 shadow-sm">
+              <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#6b6b6b]">Upcoming</p>
+              <div className="mt-5 border-l-2 border-[#a00034] pl-4">
+                <h3 className="font-serif text-2xl font-normal leading-tight text-[#a00034]">
+                  SICSS Chicago 2026
+                </h3>
+                <p className="mt-2 text-sm font-semibold text-[#031b35]">
+                  Participant · Chicago State University · July 2026
+                </p>
+                <p className="mt-2 text-sm leading-6 text-[#34475a]">
+                  Summer Institute in Computational Social Science focused on computational methods, networks, text, and social data.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 shadow-sm">
+              <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#6b6b6b]">Ongoing</p>
+              <div className="mt-5 space-y-6">
+                <div className="border-l-2 border-[#a00034] pl-4">
+                  <h3 className="font-serif text-2xl font-normal leading-tight text-[#a00034]">
+                    Community Livelihood Risk Survey
+                  </h3>
+                  <p className="mt-2 text-sm font-semibold text-[#031b35]">
+                    PI / Research Lead · NGO-supported survey project
+                  </p>
+                </div>
+                <div className="border-l-2 border-[#a00034] pl-4">
+                  <h3 className="font-serif text-2xl font-normal leading-tight text-[#a00034]">
+                    OpenDataBD
+                  </h3>
+                  <p className="mt-2 text-sm font-semibold text-[#031b35]">
+                    Founder / Research Data Platform · Open data initiative
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 shadow-sm">
+              <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#6b6b6b]">Past</p>
+              <div className="mt-5 border-l-2 border-[#a00034] pl-4">
+                <h3 className="font-serif text-2xl font-normal leading-tight text-[#a00034]">
+                  MSU Student Research Symposium
+                </h3>
+                <p className="mt-2 text-sm font-semibold text-[#031b35]">
+                  Poster presentation · DHS vaccination coverage analysis
+                </p>
+                <p className="mt-2 text-sm leading-6 text-[#34475a]">
+                  Presented survey-based public health analysis using Demographic and Health Survey data.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Topic filters */}
         {allTags.length > 0 && (
           <div className="mt-14 border-y border-[#d8d4cc] py-5">
