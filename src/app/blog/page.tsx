@@ -165,7 +165,7 @@ export default async function BlogPage({
               <h2 className="mt-2 max-w-4xl font-serif text-3xl font-normal leading-tight text-[#031b35] md:text-4xl">
                 {activeTag
                   ? activeTag
-                  : 'Comparative Evaluation of BERT, TF-IDF Linear SVM, and Pegasos Optimization for OCR-Based Document Classification'}
+                  : 'Healthcare data classification: how "model selection" has become a key point in my project.'}
               </h2>
             </div>
             <span className="font-serif text-sm tracking-[0.15em] text-[#34475a]">
