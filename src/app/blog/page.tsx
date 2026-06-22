@@ -106,7 +106,7 @@ export default async function BlogPage({
               </Link>
               <Link href="/research" className="flex items-center gap-3 hover:text-[#a00034]">
                 <CircleChevronRight className="h-4 w-4 fill-[#031b35] text-white" />
-                Research index
+                Research
               </Link>
               <Link href="/case-studies" className="flex items-center gap-3 hover:text-[#a00034]">
                 <CircleChevronRight className="h-4 w-4 fill-[#031b35] text-white" />
