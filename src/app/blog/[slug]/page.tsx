@@ -69,6 +69,22 @@ const mdComponents: Components = {
     );
   },
   pre: ({ children }) => <div className="my-6">{children}</div>,
+  table: ({ children }) => (
+    <div className="my-8 overflow-x-auto rounded-2xl border border-[#ded6c9] bg-[#fffdf8] shadow-sm">
+      <table className="w-full min-w-[620px] border-collapse text-left text-sm text-[#292929]">
+        {children}
+      </table>
+    </div>
+  ),
+  thead: ({ children }) => <thead className="bg-[#f0e9dc] text-[#191919]">{children}</thead>,
+  tbody: ({ children }) => <tbody className="divide-y divide-[#ded6c9]">{children}</tbody>,
+  tr: ({ children }) => <tr>{children}</tr>,
+  th: ({ children }) => (
+    <th className="px-4 py-3 text-xs font-bold uppercase tracking-wide text-[#5f5a52]">
+      {children}
+    </th>
+  ),
+  td: ({ children }) => <td className="px-4 py-3 align-top text-sm leading-6 text-[#292929]">{children}</td>,
   a: ({ href, children }) => (
     <a
       href={href}
