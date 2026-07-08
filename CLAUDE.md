@@ -43,7 +43,8 @@ This is a **Next.js App Router** portfolio site for Shahan Ahmed (Data Scientist
   - `src/app/project/` — Static project case-study pages (not DB-driven; each is a hand-written page)
 - `src/components/` — Shared React components; `src/components/dashboard/` for admin UI
 - `src/contexts/AuthContext.tsx` — Client-side auth state (JWT stored in `localStorage`)
-- `src/lib/` — Utilities: `db.ts` (singleton Mongoose connection), `auth.ts` (JWT sign/verify), `api.ts` (frontend `ApiClient` class), `security.ts` (request validation helpers), `rateLimit.ts` (in-memory rate limiter), `seo.ts` (metadata factory), `email.ts` (Nodemailer), `cloudinary.ts`
+- `src/lib/` — Utilities: `db.ts` (singleton Mongoose connection), `auth.ts` (JWT sign/verify), `api.ts` (frontend `ApiClient` class), `security.ts` (request validation helpers), `validation.ts` (input length limits, sanitization, email/URL validators), `rateLimit.ts` (in-memory rate limiter), `availability.ts` (appointment scheduling config/logic, `America/New_York`), `seo.ts` (metadata factory), `email.ts` (Nodemailer), `cloudinary.ts`
+- `src/proxy.ts` — Edge middleware (matcher: `/api/:path*`). Applies `rateLimit.ts` limits (skipped in dev) and enforces JWT auth on non-GET `/api/project/*` and `GET /api/contact`. This is where API rate limiting and edge-level auth actually run.
 - `src/models/` — Mongoose schemas: `User`, `Project`, `Appointment`, `Availability`, `Contact`, `Blog`
 
 ### Authentication flow
@@ -61,6 +62,10 @@ This is a **Next.js App Router** portfolio site for Shahan Ahmed (Data Scientist
 ### Project content
 
 The portfolio projects shown on `/project/[slug]` pages are **static, hand-coded pages** (one file per case study), not loaded from the database. The `Project` Mongoose model and dashboard `/dashboard/projects` are for a separate dynamic projects list.
+
+### Blog content
+
+Same dual-system split as projects. The **public blog** (`/blog` and `/blog/[slug]`) is served entirely from **static data in `src/data/blogPosts.ts`** — not the database. Posts are markdown rendered with `react-markdown` + `remark-gfm` + `remark-math` + `rehype-katex` + `rehype-raw` (math via KaTeX; `katex` CSS must be loaded for equations to display). The `Blog` Mongoose model, `/api/blog`, and the `/dashboard/blog` editor (`BlogEditor.tsx`, TipTap/Slate) are a **separate dynamic system not wired to the public route**.
 
 ### SEO
 

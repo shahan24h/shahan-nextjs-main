@@ -11,6 +11,135 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    _id: 'diy-audiobook-pipeline',
+    title: 'Turning an Open-Access Book into a Free Audiobook with Python',
+    slug: 'diy-audiobook-pipeline',
+    excerpt:
+      'How I converted Matthew Salganik\'s open-access Bit by Bit into a 10-hour audiobook using OCR, web scraping, and neural text-to-speech — a reusable Python pipeline for turning any open-access book into audio.',
+    tags: ['Text-to-Speech', 'OCR', 'Web Scraping', 'Python', 'Computational Social Science'],
+    publishDate: '2026-07-07',
+    createdAt: '2026-07-07',
+    content: `# Turning an Open-Access Book into a Free Audiobook with Python
+
+*How I converted Matthew Salganik's "Bit by Bit" into a 10-hour audiobook using OCR, web scraping, and neural text-to-speech — just in time for a 10-hour drive to SICSS Chicago.*
+
+---
+
+## The Problem
+
+I had *Bit by Bit: Social Research in the Digital Age* by Matthew J. Salganik sitting in my Zotero library as a PDF. It's one of the most important books in computational social science — a field guide to doing social research with big data, digital experiments, mass collaboration, and the ethical questions that come with all of it. And I had a deadline with a very specific shape: I was about to drive more than 10 hours from upstate New York to Chicago for the **Summer Institute in Computational Social Science (SICSS)**, and I wanted to finish the book before the program started. Ten-plus hours behind the wheel, a ten-hour book — the math practically begged for an audiobook.
+
+The problem: an official audiobook of *Bit by Bit* does exist, but it costs money — and for me, paying audiobook prices just for audio didn't feel worth it compared to owning a physical copy. Zotero's reader does have a read-aloud feature, but its premium text-to-speech only gives you about an hour for free, and that hour resets monthly — practically useless for finishing a 446-page book before a deadline. The alternatives were commercial TTS and audiobook subscriptions charging monthly fees for something that, it turns out, you can build yourself in an afternoon.
+
+So instead of paying a subscription to listen to one book, I built my own pipeline — one that can turn any open-access book into a premium-quality audiobook I can listen to whenever I want. Here's how it went, including the dead ends.
+
+## Attempt 1: Extract Text Directly from the PDF
+
+The plan was simple: extract the text with PyMuPDF, feed it to Microsoft's free \`edge-tts\` neural voices, get MP3s.
+
+\`\`\`python
+import fitz  # PyMuPDF
+doc = fitz.open("book.pdf")
+text = "\\n".join(page.get_text() for page in doc)
+\`\`\`
+
+Result: empty strings. My PDF was a **scanned copy with no text layer** — 446 pages of images. PyMuPDF had nothing to extract.
+
+## Attempt 2: OCR the Whole Book
+
+No text layer means OCR. I installed Tesseract 5.5 (the UB Mannheim Windows build) and wrote a script that rendered each page at 300 DPI with PyMuPDF and ran it through \`pytesseract\`, with a live progress counter and ETA:
+
+\`\`\`python
+pix = page.get_pixmap(dpi=300)
+img = Image.open(io.BytesIO(pix.tobytes("png")))
+text = pytesseract.image_to_string(img, lang="eng")
+\`\`\`
+
+Forty-odd minutes later I had ~1 MB of text from all 446 pages. It worked — but OCR output of an academic book is rough listening material: page numbers, running headers, figure captions turned to gibberish, in-text citations everywhere, hyphenated line breaks, and about 80 pages of references and index that nobody wants narrated.
+
+I wrote a regex-based cleaner that stripped page numbers, running headers, low-letter-density gibberish lines, and rejoined hyphenated words. It got the text to maybe 85% clean. Listenable, but not great.
+
+## The Better Idea: Go to the Source
+
+Then I remembered something that made the entire OCR step unnecessary: **Bit by Bit is open access.** Salganik published the full text freely at [bitbybitbook.com](https://www.bitbybitbook.com) through his Open Review process — the book about digital-age research methods was itself published using digital-age methods. Every section lives at a clean, predictable URL.
+
+Why fight OCR noise when publisher-quality HTML is sitting right there?
+
+I wrote a scraper with \`requests\` + \`BeautifulSoup\` — a library I first learned about from the **SICSS podcast** about six months ago, which makes it a fitting tool for a book I'm racing to finish before SICSS itself. The scraper walks all ~105 sections of the book in reading order, extracts the prose, and deliberately skips everything that makes bad audio:
+
+- References and bibliographies
+- "What to read next" reading lists
+- End-of-chapter activities (problem sets)
+- Mathematical notes (equations don't narrate well)
+
+It also does TTS-specific cleaning with regex: stripping parenthetical citations like \`(Kramer et al. 2014)\`, bracketed references, figure/table pointers, and URLs — all the academic apparatus that's essential on the page but exhausting in your ears.
+
+\`\`\`python
+# Remove parenthetical citations like (Salganik 2006)
+text = re.sub(r"\\([^()]{0,80}?\\d{4}[a-z]?(?:[;,] [^()]{0,80}?\\d{4}[a-z]?)*\\)", "", text)
+\`\`\`
+
+Two minutes of polite scraping (with a 0.5s delay between requests) produced 554 KB of pristine prose — half the size of the OCR dump, and every character of it worth hearing.
+
+## Final Step: Neural Text-to-Speech with edge-tts
+
+The last piece is \`edge-tts\`, a free Python package that taps Microsoft Edge's neural voices — the same natural-sounding voices behind Edge's "Read Aloud" feature. No API key, no subscription.
+
+The conversion script splits the book into ~40,000-character chunks at paragraph boundaries (roughly 45 minutes of audio each), converts them sequentially, and skips completed files so it can resume after any interruption:
+
+\`\`\`python
+tts = edge_tts.Communicate(chunk, "en-US-AndrewNeural")
+await tts.save(f"bit_by_bit_{idx:02d}.mp3")
+\`\`\`
+
+Fourteen chunks later: a complete, ~10-hour audiobook of one of the best methods books in my field, narrated in a warm, natural neural voice — loaded onto my phone and ready for the drive to Chicago. Total cost: $0. Total tooling: Python, PyMuPDF, Tesseract (as a detour), BeautifulSoup, and edge-tts. And the pipeline isn't a one-off: I can now turn any open-access book into a premium-quality audiobook whenever I want, with no subscription attached.
+
+## The Pipeline at a Glance
+
+\`\`\`
+Zotero PDF (scanned, no text layer)
+        │
+        ├── Attempt 1: PyMuPDF text extraction ──> empty (image-only PDF)
+        ├── Attempt 2: Tesseract OCR ──> works, but noisy
+        │
+        └── Final: scrape open-access HTML (bitbybitbook.com)
+                │
+                ├── strip citations, captions, URLs, back matter
+                ├── chunk at paragraph boundaries (~40k chars)
+                └── edge-tts neural voices ──> 14 MP3s ≈ 10 hours
+\`\`\`
+
+## About the Book (Read It — It's Free)
+
+If you work anywhere near data and human behavior, *Bit by Bit* deserves a place on your list. Salganik covers observing behavior with big data sources, asking questions in the digital age, running digital experiments, creating mass collaborations, and — in what might be the book's most valuable chapter — research ethics in an era where "we can" constantly outpaces "we should." It won the 2019 PROSE Award and the AAPOR Book Award, and it's written with unusual clarity for an academic text.
+
+And again: **the full book is free to read at [bitbybitbook.com](https://www.bitbybitbook.com)**, by the author's own design.
+
+## A Note on Ethics and Intent
+
+This matters, so let me be explicit:
+
+- **I only recommend this process for books that are legitimately free** — open-access titles like *Bit by Bit*, public domain works, or books you own where the license permits personal-use conversion. Salganik deliberately made his book freely available; converting it for my own listening honors that spirit rather than violating it.
+- **This is strictly not-for-profit and personal.** The MP3s live on my machine and my phone. I'm not distributing them, selling them, or uploading them anywhere. The goal is accessibility and time-saving, not piracy.
+- **The point is independence, not free-riding.** I'd rather spend an afternoon building a reusable pipeline than pay a monthly audiobook or TTS subscription to listen to a book the author already gave away. Support authors — buy the print book (I'd argue *Bit by Bit* is worth owning physically), cite their work, recommend it. Then build your own tools.
+
+There's a growing world of open-access academic books — through publishers' open programs, the Open Review Toolkit, OAPEN, and authors who simply choose openness. This pipeline works on any of them.
+
+## What's Next
+
+The pipeline is general enough to reuse: point the scraper at any open-access book with predictable URLs (or fall back to the OCR path for scanned material you own), and the chunker + TTS stage doesn't care where the text came from. A few improvements I'm considering:
+
+- An LLM cleaning pass (Claude Haiku via the Anthropic API) for books where regex cleaning isn't enough — the same pattern I use for text classification in my research pipelines
+- Automatic chapter metadata tagging in the MP3s
+- A single CLI wrapper: \`python audiobook.py --source <url-or-pdf>\`
+
+If you want the scripts, reach out — happy to share.
+
+---
+
+*Built with: Python, PyMuPDF, Tesseract OCR, pytesseract, requests, BeautifulSoup, edge-tts. Runtime: ~1 afternoon including the dead ends.*`,
+  },
+  {
     _id: 'bert-linear-svm-pegasos-ocr-classifier',
     title: 'From BERT to Linear SVM to Pegasos: Building a High-Recall OCR Document Classifier',
     slug: 'from-bert-to-linear-svm-to-pegasos-ocr-document-classifier',
