@@ -1,0 +1,856 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Top 15 Gender-Related Terms by Frequency and Sentiment
+    </title>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <style>
+
+        body {
+            margin: 0;
+            padding: 30px;
+            background: #ffffff;
+            color: #222222;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .page {
+            max-width: 1350px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .subtitle {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #555555;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        #chart {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .tooltip {
+            position: absolute;
+            pointer-events: none;
+            z-index: 10;
+
+            max-width: 330px;
+            padding: 12px 15px;
+
+            border: 1px solid #cccccc;
+            border-radius: 7px;
+
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+
+            color: #222222;
+            font-size: 14px;
+            line-height: 1.5;
+
+            opacity: 0;
+        }
+
+        .axis text {
+            fill: #333333;
+            font-size: 12px;
+        }
+
+        .axis path,
+        .axis line {
+            stroke: #aaaaaa;
+        }
+
+        .grid line {
+            stroke: #dddddd;
+            stroke-dasharray: 3 3;
+        }
+
+        .grid path {
+            stroke: none;
+        }
+
+        .bar {
+            cursor: pointer;
+            transition:
+                opacity 0.15s ease,
+                stroke-width 0.15s ease;
+        }
+
+        .bar:hover {
+            opacity: 1;
+            stroke: #222222;
+            stroke-width: 2px;
+        }
+
+        .bar-label {
+            pointer-events: none;
+            fill: #111111;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .count-label {
+            pointer-events: none;
+            fill: #222222;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .term-label {
+            fill: #222222;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .axis-label {
+            fill: #222222;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .legend-label {
+            fill: #333333;
+            font-size: 12px;
+        }
+
+        .footnote {
+            margin-top: 10px;
+            color: #666666;
+            text-align: center;
+            font-size: 13px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+    <h1>
+        Top 15 Gender-Related Terms in r/survivor
+    </h1>
+
+    <p class="subtitle">
+        Bar length represents the number of Reddit records.
+        Bar color represents average sentiment from negative to positive.
+    </p>
+
+    <div id="chart"></div>
+
+    <p class="footnote">
+        Sentiment score = positive probability − negative probability.
+        Hover over each bar for complete sentiment results.
+    </p>
+
+</div>
+
+
+<div
+    id="tooltip"
+    class="tooltip"
+></div>
+
+
+<script>
+
+    // ========================================================
+    // DATA
+    // ========================================================
+
+    const data = [{"matched_term": "villains", "total_records": 42775, "average_sentiment_score": -0.0136, "negative": 27.46, "neutral": 49.17, "positive": 23.37, "dominant_sentiment": "neutral"}, {"matched_term": "performance", "total_records": 18734, "average_sentiment_score": 0.0018, "negative": 34.4, "neutral": 32.8, "positive": 32.8, "dominant_sentiment": "negative"}, {"matched_term": "dominant", "total_records": 17658, "average_sentiment_score": 0.0844, "negative": 24.97, "neutral": 41.27, "positive": 33.76, "dominant_sentiment": "neutral"}, {"matched_term": "leader", "total_records": 7499, "average_sentiment_score": -0.0802, "negative": 32.72, "neutral": 44.94, "positive": 22.34, "dominant_sentiment": "neutral"}, {"matched_term": "attractive", "total_records": 6871, "average_sentiment_score": 0.1068, "negative": 29.76, "neutral": 29.78, "positive": 40.46, "dominant_sentiment": "positive"}, {"matched_term": "toxic", "total_records": 6048, "average_sentiment_score": -0.5989, "negative": 81.53, "neutral": 9.87, "positive": 8.6, "dominant_sentiment": "negative"}, {"matched_term": "bruh", "total_records": 4254, "average_sentiment_score": -0.3579, "negative": 54.44, "neutral": 35.73, "positive": 9.83, "dominant_sentiment": "negative"}, {"matched_term": "dominance", "total_records": 3268, "average_sentiment_score": 0.0918, "negative": 22.43, "neutral": 45.65, "positive": 31.92, "dominant_sentiment": "neutral"}, {"matched_term": "bachelor", "total_records": 2216, "average_sentiment_score": -0.0616, "negative": 30.73, "neutral": 47.2, "positive": 22.07, "dominant_sentiment": "neutral"}, {"matched_term": "provider", "total_records": 1570, "average_sentiment_score": -0.0246, "negative": 29.17, "neutral": 45.16, "positive": 25.67, "dominant_sentiment": "neutral"}, {"matched_term": "authenticity", "total_records": 839, "average_sentiment_score": -0.0689, "negative": 39.81, "neutral": 31.23, "positive": 28.96, "dominant_sentiment": "negative"}, {"matched_term": "stoic", "total_records": 313, "average_sentiment_score": 0.0131, "negative": 31.63, "neutral": 34.5, "positive": 33.87, "dominant_sentiment": "neutral"}, {"matched_term": "unattractive", "total_records": 253, "average_sentiment_score": -0.4102, "negative": 60.87, "neutral": 30.04, "positive": 9.09, "dominant_sentiment": "negative"}, {"matched_term": "protector", "total_records": 141, "average_sentiment_score": 0.0288, "negative": 25.53, "neutral": 46.81, "positive": 27.66, "dominant_sentiment": "neutral"}, {"matched_term": "breadwinner", "total_records": 55, "average_sentiment_score": -0.2139, "negative": 34.55, "neutral": 58.18, "positive": 7.27, "dominant_sentiment": "neutral"}];
+
+
+    // ========================================================
+    // CHART DIMENSIONS
+    // ========================================================
+
+    const margin = {
+        top: 110,
+        right: 180,
+        bottom: 75,
+        left: 190
+    };
+
+    const outerWidth = 1300;
+    const outerHeight = 830;
+
+    const width =
+        outerWidth
+        - margin.left
+        - margin.right;
+
+    const height =
+        outerHeight
+        - margin.top
+        - margin.bottom;
+
+
+    // ========================================================
+    // SVG CONTAINER
+    // ========================================================
+
+    const svgRoot = d3
+        .select("#chart")
+        .append("svg")
+        .attr(
+            "viewBox",
+            `0 0 ${outerWidth} ${outerHeight}`
+        )
+        .attr(
+            "preserveAspectRatio",
+            "xMidYMid meet"
+        )
+        .style(
+            "width",
+            "100%"
+        )
+        .style(
+            "height",
+            "auto"
+        );
+
+
+    const svg = svgRoot
+        .append("g")
+        .attr(
+            "transform",
+            `translate(${margin.left}, ${margin.top})`
+        );
+
+
+    // ========================================================
+    // SCALES
+    // ========================================================
+
+    const maximumRecords = d3.max(
+        data,
+        d => d.total_records
+    );
+
+
+    /*
+       Additional x-axis space ensures the largest outside
+       record-count labels remain visible.
+    */
+
+    const x = d3
+        .scaleLinear()
+        .domain([
+            0,
+            maximumRecords * 1.14
+        ])
+        .nice()
+        .range([
+            0,
+            width
+        ]);
+
+
+    const y = d3
+        .scaleBand()
+        .domain(
+            data.map(
+                d => d.matched_term
+            )
+        )
+        .range([
+            0,
+            height
+        ])
+        .padding(0.22);
+
+
+    /*
+       Diverging sentiment scale:
+
+       -1 = strongly negative
+        0 = neutral or balanced
+       +1 = strongly positive
+    */
+
+    const colorScale = d3
+        .scaleDiverging()
+        .domain([
+            -1,
+            0,
+            1
+        ])
+        .interpolator(
+            d3.interpolateRdYlGn
+        );
+
+
+    // ========================================================
+    // TOOLTIP
+    // ========================================================
+
+    const tooltip = d3.select(
+        "#tooltip"
+    );
+
+
+    // ========================================================
+    // BACKGROUND GRID
+    // ========================================================
+
+    svg
+        .append("g")
+        .attr(
+            "class",
+            "grid"
+        )
+        .attr(
+            "transform",
+            `translate(0, ${height})`
+        )
+        .call(
+            d3
+                .axisBottom(x)
+                .ticks(7)
+                .tickSize(-height)
+                .tickFormat("")
+        );
+
+
+    // ========================================================
+    // BARS
+    // ========================================================
+
+    svg
+        .selectAll(".bar")
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr(
+            "class",
+            "bar"
+        )
+        .attr(
+            "x",
+            0
+        )
+        .attr(
+            "y",
+            d => y(d.matched_term)
+        )
+        .attr(
+            "height",
+            y.bandwidth()
+        )
+        .attr(
+            "width",
+            d => x(d.total_records)
+        )
+        .attr(
+            "rx",
+            5
+        )
+        .attr(
+            "fill",
+            d => colorScale(
+                d.average_sentiment_score
+            )
+        )
+        .attr(
+            "opacity",
+            0.88
+        )
+
+        .on(
+            "mousemove",
+            function(event, d) {
+
+                tooltip
+                    .style(
+                        "opacity",
+                        1
+                    )
+                    .html(`
+                        <strong>${d.matched_term}</strong><br>
+
+                        Total records:
+                        ${d3.format(",")(d.total_records)}
+                        <br>
+
+                        Negative:
+                        ${d.negative.toFixed(2)}%
+                        <br>
+
+                        Neutral:
+                        ${d.neutral.toFixed(2)}%
+                        <br>
+
+                        Positive:
+                        ${d.positive.toFixed(2)}%
+                        <br>
+
+                        Average sentiment score:
+                        ${d3.format("+.4f")(
+                            d.average_sentiment_score
+                        )}
+                        <br>
+
+                        Dominant category:
+                        ${titleCase(
+                            d.dominant_sentiment
+                        )}
+                    `)
+                    .style(
+                        "left",
+                        `${event.pageX + 14}px`
+                    )
+                    .style(
+                        "top",
+                        `${event.pageY - 28}px`
+                    );
+            }
+        )
+
+        .on(
+            "mouseout",
+            function() {
+
+                tooltip
+                    .style(
+                        "opacity",
+                        0
+                    );
+            }
+        );
+
+
+    // ========================================================
+    // SHORT TEXT INSIDE BARS
+    // ========================================================
+
+    svg
+        .selectAll(".bar-label")
+        .data(data)
+        .enter()
+        .append("text")
+        .attr(
+            "class",
+            "bar-label"
+        )
+        .attr(
+            "x",
+            12
+        )
+        .attr(
+            "y",
+            d =>
+                y(d.matched_term)
+                + y.bandwidth() / 2
+        )
+        .attr(
+            "dy",
+            "0.35em"
+        )
+        .text(
+            d =>
+                `${d.negative.toFixed(1)}% negative`
+        );
+
+
+    // ========================================================
+    // RECORD COUNTS OUTSIDE BARS
+    // ========================================================
+
+    /*
+       For long bars, place the count 24 pixels after the bar.
+
+       For shorter bars such as "bruh", "dominance", and
+       "bachelor", force the count to begin no earlier than
+       x = 165 pixels. This prevents the count from covering
+       the negative-percentage label inside the bar.
+    */
+
+    svg
+        .selectAll(".count-label")
+        .data(data)
+        .enter()
+        .append("text")
+        .attr(
+            "class",
+            "count-label"
+        )
+        .attr(
+            "x",
+            d => Math.max(
+                x(d.total_records) + 24,
+                165
+            )
+        )
+        .attr(
+            "y",
+            d =>
+                y(d.matched_term)
+                + y.bandwidth() / 2
+        )
+        .attr(
+            "dy",
+            "0.35em"
+        )
+        .text(
+            d => d3.format(",")(
+                d.total_records
+            )
+        );
+
+
+    // ========================================================
+    // X AXIS
+    // ========================================================
+
+    svg
+        .append("g")
+        .attr(
+            "class",
+            "axis"
+        )
+        .attr(
+            "transform",
+            `translate(0, ${height})`
+        )
+        .call(
+            d3
+                .axisBottom(x)
+                .ticks(7)
+                .tickFormat(
+                    d3.format("~s")
+                )
+        );
+
+
+    // ========================================================
+    // Y AXIS
+    // ========================================================
+
+    const yAxis = svg
+        .append("g")
+        .attr(
+            "class",
+            "axis"
+        )
+        .call(
+            d3.axisLeft(y)
+        );
+
+
+    yAxis
+        .selectAll("text")
+        .attr(
+            "class",
+            "term-label"
+        );
+
+
+    yAxis
+        .selectAll(".tick line")
+        .remove();
+
+
+    // ========================================================
+    // X-AXIS TITLE
+    // ========================================================
+
+    svg
+        .append("text")
+        .attr(
+            "class",
+            "axis-label"
+        )
+        .attr(
+            "x",
+            width / 2
+        )
+        .attr(
+            "y",
+            height + 58
+        )
+        .attr(
+            "text-anchor",
+            "middle"
+        )
+        .text(
+            "Number of Reddit records containing the term"
+        );
+
+
+    // ========================================================
+    // COLOR LEGEND
+    // ========================================================
+
+    const legendWidth = 360;
+    const legendHeight = 16;
+
+    const legendX =
+        width
+        - legendWidth;
+
+    const legendY = -58;
+
+
+    const defs = svg
+        .append("defs");
+
+
+    const gradient = defs
+        .append("linearGradient")
+        .attr(
+            "id",
+            "sentiment-gradient"
+        )
+        .attr(
+            "x1",
+            "0%"
+        )
+        .attr(
+            "x2",
+            "100%"
+        )
+        .attr(
+            "y1",
+            "0%"
+        )
+        .attr(
+            "y2",
+            "0%"
+        );
+
+
+    gradient
+        .selectAll("stop")
+        .data(
+            d3.range(
+                0,
+                1.01,
+                0.1
+            )
+        )
+        .enter()
+        .append("stop")
+        .attr(
+            "offset",
+            d => `${d * 100}%`
+        )
+        .attr(
+            "stop-color",
+            d => colorScale(
+                -1 + d * 2
+            )
+        );
+
+
+    svg
+        .append("text")
+        .attr(
+            "x",
+            legendX
+        )
+        .attr(
+            "y",
+            legendY - 12
+        )
+        .attr(
+            "class",
+            "legend-label"
+        )
+        .style(
+            "font-weight",
+            "bold"
+        )
+        .text(
+            "Average sentiment score"
+        );
+
+
+    svg
+        .append("rect")
+        .attr(
+            "x",
+            legendX
+        )
+        .attr(
+            "y",
+            legendY
+        )
+        .attr(
+            "width",
+            legendWidth
+        )
+        .attr(
+            "height",
+            legendHeight
+        )
+        .style(
+            "fill",
+            "url(#sentiment-gradient)"
+        );
+
+
+    const legendScale = d3
+        .scaleLinear()
+        .domain([
+            -1,
+            1
+        ])
+        .range([
+            0,
+            legendWidth
+        ]);
+
+
+    svg
+        .append("g")
+        .attr(
+            "transform",
+            `translate(
+                ${legendX},
+                ${legendY + legendHeight}
+            )`
+        )
+        .call(
+            d3
+                .axisBottom(legendScale)
+                .tickValues([
+                    -1,
+                    -0.5,
+                    0,
+                    0.5,
+                    1
+                ])
+                .tickFormat(
+                    d => {
+                        if (d === 0) {
+                            return "0.0";
+                        }
+
+                        return d3.format(
+                            "+.1f"
+                        )(d);
+                    }
+                )
+        )
+        .selectAll("text")
+        .style(
+            "font-size",
+            "10px"
+        );
+
+
+    // ========================================================
+    // LEGEND DESCRIPTIONS
+    // ========================================================
+
+    svg
+        .append("text")
+        .attr(
+            "x",
+            legendX
+        )
+        .attr(
+            "y",
+            legendY + 52
+        )
+        .attr(
+            "class",
+            "legend-label"
+        )
+        .attr(
+            "text-anchor",
+            "start"
+        )
+        .text(
+            "More negative"
+        );
+
+
+    svg
+        .append("text")
+        .attr(
+            "x",
+            legendX + legendWidth / 2
+        )
+        .attr(
+            "y",
+            legendY + 52
+        )
+        .attr(
+            "class",
+            "legend-label"
+        )
+        .attr(
+            "text-anchor",
+            "middle"
+        )
+        .text(
+            "Neutral"
+        );
+
+
+    svg
+        .append("text")
+        .attr(
+            "x",
+            legendX + legendWidth
+        )
+        .attr(
+            "y",
+            legendY + 52
+        )
+        .attr(
+            "class",
+            "legend-label"
+        )
+        .attr(
+            "text-anchor",
+            "end"
+        )
+        .text(
+            "More positive"
+        );
+
+
+    // ========================================================
+    // HELPER FUNCTION
+    // ========================================================
+
+    function titleCase(value) {
+
+        return value
+            .charAt(0)
+            .toUpperCase()
+            + value.slice(1);
+    }
+
+</script>
+
+</body>
+
+</html>
