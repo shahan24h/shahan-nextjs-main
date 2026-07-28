@@ -44,7 +44,7 @@ This is a **Next.js App Router** portfolio site for Shahan Ahmed (Data Scientist
 - `src/components/` — Shared React components; `src/components/dashboard/` for admin UI
 - `src/contexts/AuthContext.tsx` — Client-side auth state (JWT stored in `localStorage`)
 - `src/lib/` — Utilities: `db.ts` (singleton Mongoose connection), `auth.ts` (JWT sign/verify), `api.ts` (frontend `ApiClient` class), `security.ts` (request validation helpers), `validation.ts` (input length limits, sanitization, email/URL validators), `rateLimit.ts` (in-memory rate limiter), `availability.ts` (appointment scheduling config/logic, `America/New_York`), `seo.ts` (metadata factory), `email.ts` (Nodemailer), `cloudinary.ts`
-- `src/proxy.ts` — Edge middleware (matcher: `/api/:path*`). Applies `rateLimit.ts` limits (skipped in dev) and enforces JWT auth on non-GET `/api/project/*` and `GET /api/contact`. This is where API rate limiting and edge-level auth actually run.
+- `src/proxy.ts` — Edge middleware (matcher: `/api/:path*`). Applies `rateLimit.ts` limits (skipped in dev) and enforces JWT auth on non-GET `/api/project/*` and `GET /api/contact`. This is where API rate limiting and edge-level auth actually run. Dashboard *pages* (as opposed to their API routes) are not protected here — that guard is client-side only (see Authentication flow below).
 - `src/models/` — Mongoose schemas: `User`, `Project`, `Appointment`, `Availability`, `Contact`, `Blog`
 
 ### Authentication flow
