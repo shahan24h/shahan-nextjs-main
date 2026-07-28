@@ -14,7 +14,7 @@ body {
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #f7f4ed;
+  background: var(--editorial-bg);
 }
 
 /* ─── Editorial Typography System ───────────────────────── */
@@ -27,6 +27,19 @@ body {
   --editorial-border: #ded6c9;
   --editorial-chip: #f0e9dc;
   --editorial-accent: #6b4eff;
+  --editorial-header-bg: rgba(247, 244, 237, 0.85);
+}
+
+:root.dark {
+  --editorial-bg: #141414;
+  --editorial-card: #1c1b19;
+  --editorial-ink: #f2f0eb;
+  --editorial-muted: #b3b1a8;
+  --editorial-soft: #8f8c82;
+  --editorial-border: #33322e;
+  --editorial-chip: #232220;
+  --editorial-accent: #ab98ff;
+  --editorial-header-bg: rgba(20, 20, 20, 0.85);
 }
 
 h1, h2, h3, h4, h5, h6 {

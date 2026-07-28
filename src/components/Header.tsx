@@ -1,188 +1,149 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { Menu, X, LogOut, Home, Briefcase, MessageCircle, BarChart3, Calendar, BookOpen, FlaskConical } from 'lucide-react';
+import { useTheme } from '@/contexts/ThemeContext';
+import { Calendar, LayoutDashboard, LogOut } from 'lucide-react';
 import AppointmentModal from './AppointmentModal';
+
+const SECTION_IDS = ['about', 'research', 'publications', 'projects'];
+
+const NAV_ITEMS = [
+  { id: 'about', label: 'About' },
+  { id: 'research', label: 'Research' },
+  { id: 'publications', label: 'Publications' },
+  { id: 'projects', label: 'Projects' },
+];
 
 const Header = () => {
   const { isLogin, isLoading, logout } = useAuth();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [appointmentModalOpen, setAppointmentModalOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
   const pathname = usePathname();
+  const isHome = pathname === '/';
+
+  const [active, setActive] = useState('about');
+  const [appointmentModalOpen, setAppointmentModalOpen] = useState(false);
 
   useEffect(() => {
-    // Set initial state to prevent flicker on mount
-    setScrolled(window.scrollY > 10);
+    if (!isHome) return;
 
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+    const onScroll = () => {
+      let current = active;
+      for (const id of SECTION_IDS) {
+        const el = document.getElementById(id);
+        if (el && window.pageYOffset >= el.offsetTop - 200) current = id;
+      }
+      if (current !== active) setActive(current);
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isHome, active]);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     logout();
     window.location.reload();
-  };
-
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-
-  const isActive = (path: string) => pathname === path;
-
-  const navItems = [
-    { path: "/", label: "Home", icon: Home },
-    { path: "/project", label: "Products", icon: Briefcase },
-    { path: "/blog", label: "Blog", icon: BookOpen },
-    { path: "/research", label: "Research", icon: FlaskConical },
-    { path: "/contact", label: "Contact", icon: MessageCircle },
-  ];
+  }, [logout]);
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-150 ease-in-out ${
-        scrolled
-          ? 'bg-gray-900 backdrop-blur-md shadow-lg border-b border-gray-700'
-          : 'bg-gray-900/80 backdrop-blur-sm border-b border-gray-800/60'
-      }`}>
-        <div className="container mx-auto px-6 py-4">
-          <div className="relative flex justify-between items-center">
-            {/* Logo */}
-            <div className="flex items-center space-x-2 flex-shrink-0">
-              <Link href="/" className="text-xl font-bold tracking-wide cursor-pointer text-gray-100 hover:text-white transition-colors duration-200">
-                Shahan Ahmed
-              </Link>
-            </div>
+      <header className="sticky top-0 z-50 w-full border-b border-[var(--editorial-border)] bg-[var(--editorial-header-bg)] backdrop-blur-md">
+        <nav className="mx-auto flex max-w-[1000px] flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 py-4 md:px-6">
+          <Link
+            href="/"
+            className="font-serif text-lg font-bold text-[var(--editorial-ink)]"
+          >
+            Shahan Ahmed
+          </Link>
 
-            {/* Desktop Navigation - centered */}
-            <nav className="hidden lg:flex items-center space-x-1 absolute left-1/2 -translate-x-1/2">
-              {navItems.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.path}
-                    href={item.path}
-                    className={`flex items-center space-x-1.5 px-3 py-2 rounded-lg transition-all duration-200 font-medium text-sm ${
-                      isActive(item.path)
-                        ? 'text-white bg-blue-600 shadow-soft'
-                        : 'text-gray-400 hover:text-white hover:bg-gray-800'
-                    }`}
-                  >
-                    <Icon size={18} />
-                    <span>{item.label}</span>
-                  </Link>
-                );
-              })}
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            {NAV_ITEMS.map((item) => {
+              const isActive = isHome && active === item.id;
+              return (
+                <Link
+                  key={item.id}
+                  href={isHome ? `#${item.id}` : `/#${item.id}`}
+                  className={`border-b pb-1 font-sans text-xs font-semibold uppercase tracking-[0.1em] transition-colors ${
+                    isActive
+                      ? 'border-[var(--editorial-ink)] text-[var(--editorial-ink)]'
+                      : 'border-transparent text-[var(--editorial-muted)] hover:text-[var(--editorial-ink)]'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+            <Link
+              href="/blog"
+              className={`font-sans text-xs font-semibold uppercase tracking-[0.1em] transition-colors ${
+                pathname.startsWith('/blog')
+                  ? 'text-[var(--editorial-ink)]'
+                  : 'text-[var(--editorial-muted)] hover:text-[var(--editorial-ink)]'
+              }`}
+            >
+              Blog
+            </Link>
+            <Link
+              href="/contact"
+              className={`font-sans text-xs font-semibold uppercase tracking-[0.1em] transition-colors ${
+                pathname.startsWith('/contact')
+                  ? 'text-[var(--editorial-ink)]'
+                  : 'text-[var(--editorial-muted)] hover:text-[var(--editorial-ink)]'
+              }`}
+            >
+              Contact
+            </Link>
 
-              {/* Auth Section - Only show when logged in */}
-              {!isLoading && isLogin ? (
-                <div className="flex items-center space-x-4 ml-4 pl-4 border-l border-gray-700">
-                  <Link
-                    href="/dashboard"
-                    className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-gray-700 text-gray-200 hover:bg-gray-600 transition-all duration-200 font-medium"
-                  >
-                    <BarChart3 size={18} />
-                    <span>Dashboard</span>
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-all duration-200 font-medium"
-                  >
-                    <LogOut size={18} />
-                    <span>Logout</span>
-                  </button>
-                </div>
-              ) : null}
-            </nav>
-
-            {/* Mobile Menu Button */}
-            <div className="lg:hidden">
-              <button
-                onClick={toggleMenu}
-                className="p-2 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-colors duration-200"
-                aria-label="Toggle menu"
-              >
-                {menuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Navigation */}
-          {menuOpen && (
-            <div className="mt-4 lg:hidden animate-slide-down">
-              <div className="bg-gray-800 rounded-xl shadow-large border border-gray-700 p-6">
-                <nav className="space-y-3">
-                  {navItems.map((item) => {
-                    const Icon = item.icon;
-                    return (
-                      <Link
-                        key={item.path}
-                        href={item.path}
-                        onClick={toggleMenu}
-                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium ${
-                          isActive(item.path)
-                            ? 'text-white bg-blue-600'
-                            : 'text-gray-300 hover:text-white hover:bg-gray-700'
-                        }`}
-                      >
-                        <Icon size={20} />
-                        <span>{item.label}</span>
-                      </Link>
-                    );
-                  })}
-
-                  {/* Mobile Auth Section - Only show when logged in */}
-                  {!isLoading && isLogin ? (
-                    <div className="pt-3 border-t border-gray-700">
-                      <div className="space-y-3">
-                        <Link
-                          href="/dashboard"
-                          onClick={toggleMenu}
-                          className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-gray-700 text-gray-200 font-medium"
-                        >
-                          <BarChart3 size={20} />
-                          <span>Dashboard</span>
-                        </Link>
-                        <button
-                          onClick={() => { handleLogout(); toggleMenu(); }}
-                          className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-500/10 font-medium"
-                        >
-                          <LogOut size={20} />
-                          <span>Logout</span>
-                        </button>
-                      </div>
-                    </div>
-                  ) : null}
-                </nav>
+            {!isLoading && isLogin ? (
+              <div className="flex items-center gap-x-4 border-l border-[var(--editorial-border)] pl-5">
+                <Link
+                  href="/dashboard"
+                  className="flex items-center gap-1.5 font-sans text-xs font-semibold uppercase tracking-[0.1em] text-[var(--editorial-muted)] transition-colors hover:text-[var(--editorial-ink)]"
+                >
+                  <LayoutDashboard size={14} />
+                  Dashboard
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-1.5 font-sans text-xs font-semibold uppercase tracking-[0.1em] text-[var(--editorial-muted)] transition-colors hover:text-[var(--editorial-ink)]"
+                >
+                  <LogOut size={14} />
+                  Logout
+                </button>
               </div>
-            </div>
-          )}
-        </div>
+            ) : null}
 
-        {/* Appointment Modal */}
-        <AppointmentModal
-          isOpen={appointmentModalOpen}
-          onClose={() => setAppointmentModalOpen(false)}
-        />
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle dark mode"
+              className="rounded-full border border-[var(--editorial-border)] px-3.5 py-1 font-sans text-xs font-semibold uppercase tracking-[0.05em] text-[var(--editorial-ink)] transition-colors hover:border-[var(--editorial-ink)]"
+            >
+              {theme === 'dark' ? 'Light' : 'Dark'}
+            </button>
+          </div>
+        </nav>
       </header>
 
-      {/* Floating Talk to Me Button */}
       <div className="fixed bottom-8 right-8 z-50 group">
         <button
           onClick={() => setAppointmentModalOpen(true)}
           aria-label="Talk to Me"
-          className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300"
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--editorial-ink)] text-[var(--editorial-bg)] transition-transform duration-200 hover:scale-110"
         >
           <Calendar size={20} />
         </button>
-        <span className="absolute right-14 bottom-2 whitespace-nowrap bg-gray-800 text-gray-200 text-xs font-medium px-2.5 py-1.5 rounded-lg border border-gray-700 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+        <span className="absolute bottom-2 right-14 whitespace-nowrap rounded-lg border border-[var(--editorial-border)] bg-[var(--editorial-card)] px-2.5 py-1.5 font-sans text-xs font-medium text-[var(--editorial-ink)] opacity-0 pointer-events-none transition-opacity duration-200 group-hover:opacity-100">
           Talk to Me
         </span>
       </div>
+
+      <AppointmentModal
+        isOpen={appointmentModalOpen}
+        onClose={() => setAppointmentModalOpen(false)}
+      />
     </>
   );
 };

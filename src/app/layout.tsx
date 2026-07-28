@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import 'katex/dist/katex.min.css'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { ThemeProvider } from '@/contexts/ThemeContext'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { generateMetadata as genMeta, defaultSEO } from '@/lib/seo'
@@ -50,20 +51,27 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en-US" className={inter.variable}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',d);document.documentElement.style.colorScheme=d?'dark':'light';}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="font-sans antialiased">
         <PersonSchema />
         <OrganizationSchema />
         <ProfilePageSchema />
         <ProfessionalServiceSchema />
-        <AuthProvider>
-          <div className="min-h-screen bg-gray-900 text-gray-300">
+        <ThemeProvider>
+          <AuthProvider>
             <Header />
-            <main className="pt-20">
+            <main>
               {children}
             </main>
             <Footer />
-          </div>
-        </AuthProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
