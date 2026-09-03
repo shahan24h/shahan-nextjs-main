@@ -38,43 +38,14 @@ function isTokenValidFormat(token: string): boolean {
 }
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  // Initialize state from localStorage immediately if available (client-side only)
-  const getInitialAuthState = () => {
-    if (typeof window === 'undefined') {
-      return { isLogin: false, user: null };
-    }
-    
-    const accessToken = localStorage.getItem('accessToken');
-    const userData = localStorage.getItem('user');
-    
-    if (accessToken && userData) {
-      try {
-        const parsedUser = JSON.parse(userData);
-        // Don't verify token expiration here - just check if it exists
-        // Token validation will happen on API calls
-        return { isLogin: true, user: parsedUser };
-      } catch {
-        return { isLogin: false, user: null };
-      }
-    }
-    
-    return { isLogin: false, user: null };
-  };
-
-  const initialState = getInitialAuthState();
-  const [isLogin, setIsLogin] = useState(initialState.isLogin);
+  // Always initialize with consistent values to avoid SSR/client mismatch
+  const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<User | null>(initialState.user);
+  const [user, setUser] = useState<User | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Check token validity on mount and periodically
+  // Populate from localStorage on mount (client-side only)
   useEffect(() => {
-    // Only run on client side
-    if (typeof window === 'undefined') {
-      setIsLoading(false);
-      return;
-    }
-
     const checkAuth = () => {
       const accessToken = localStorage.getItem('accessToken');
       const userData = localStorage.getItem('user');
@@ -82,7 +53,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (accessToken && userData) {
         try {
           const parsedUser = JSON.parse(userData);
-          
+
           // Check if token has valid format (client-side only)
           // Actual token validation happens on server via API calls
           if (isTokenValidFormat(accessToken)) {
@@ -108,6 +79,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLogin(false);
         setUser(null);
       }
+
+      setIsLoading(false);
     };
 
     // Check immediately and set loading to false

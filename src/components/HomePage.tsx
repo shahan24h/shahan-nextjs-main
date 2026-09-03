@@ -31,22 +31,18 @@ const studies = [
   },
 ];
 
-const publications = [
-  {
-    citation: 'Ahmed, S. et al. (2023). "Synthesis and characterization study." Inorganic Chemistry Communications.',
-    status: 'Published',
-  },
-  {
-    citation: 'Ahmed, S. et al. (2022). "Modeling and simulation of solar cells." Optics & Laser Technology.',
-    status: 'Published',
-  },
-  {
-    citation: 'Ahmed, S. "Federated learning + synthetic data for vaccination equity research."',
-    status: 'Manuscript in preparation',
-  },
+const researchPublications = [
   {
     citation: '"DHS Vaccination Coverage Analysis." 2024 MSU Student Research Symposium: analysis of Demographic and Health Surveys data to identify vaccination coverage gaps across countries.',
     status: 'Conference presentation',
+  },
+  {
+    citation: 'Ahmed, S. "Federated Learning and Synthetic Data for Vaccination Equity Research." CSS2026 — The Computational Social Science Society of the Americas 2026 International Conference.',
+    status: 'Accepted',
+  },
+  {
+    citation: 'Ahmed, S. "Community Interventions and Cross-Platform Response."',
+    status: 'Working paper',
   },
 ];
 
@@ -64,6 +60,13 @@ const projects = [
     href: '/case-studies',
     label: 'View',
     external: false,
+  },
+  {
+    name: 'MechanicBD',
+    desc: 'A service-based platform startup. End-to-end tech stack built by the team I lead.',
+    href: 'https://www.mechanicbdsyl.com',
+    label: 'Visit',
+    external: true,
   },
 ];
 
@@ -85,8 +88,7 @@ const HomePage = () => {
       <main className="mx-auto max-w-[800px] px-5 pb-24 md:px-0">
         <section id="about" className="mb-16">
           <p className="mb-6 font-serif text-xl leading-8 text-[var(--editorial-ink)]">
-            I am a researcher in computational social science, applying natural language processing and
-            adversarial machine learning to questions of healthcare equity and public health analytics.
+            M.A. in Social Research and Data Analysis, currently controlling large-scale data workflows at Conduent, preparing for a Ph.D. in 2027 in Information Systems or Computational Social Science.
           </p>
           <div className="flex flex-wrap gap-x-4 gap-y-2 font-sans text-sm">
             <Link href="/contact" className={linkClass}>Contact</Link>
@@ -147,25 +149,9 @@ const HomePage = () => {
 
         <hr className="mb-16 border-t border-[var(--editorial-border)]" />
 
-        <section id="publications" className="mb-16">
-          <h2 className="mb-6 font-serif text-2xl font-semibold leading-8 text-[var(--editorial-ink)]">
-            Publications &amp; Presentations
-          </h2>
-          <div className="flex flex-col gap-7">
-            {publications.map((pub) => (
-              <div key={pub.citation} className="border-l-2 border-[var(--editorial-ink)] pl-4">
-                <p className="font-serif text-lg leading-7 text-[var(--editorial-ink)]">{pub.citation}</p>
-                <div className="mt-1.5 font-sans text-[13px] text-[var(--editorial-muted)]">{pub.status}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <hr className="mb-16 border-t border-[var(--editorial-border)]" />
-
         <section id="projects">
           <h2 className="mb-6 font-serif text-2xl font-semibold leading-8 text-[var(--editorial-ink)]">
-            Selected Projects
+            Ongoing Projects
           </h2>
           <ul className="flex flex-col">
             {projects.map((proj) => (
@@ -193,6 +179,34 @@ const HomePage = () => {
               </li>
             ))}
           </ul>
+        </section>
+
+        <hr className="mb-16 border-t border-[var(--editorial-border)]" />
+
+        <section id="publications" className="mb-16">
+          <h2 className="mb-6 font-serif text-2xl font-semibold leading-8 text-[var(--editorial-ink)]">
+            Publications &amp; Presentations
+          </h2>
+          <div className="flex flex-col gap-7">
+            {researchPublications.map((pub) => (
+              <div key={pub.citation} className="border-l-2 border-[var(--editorial-ink)] pl-4">
+                <p className="font-serif text-lg leading-7 text-[var(--editorial-ink)]">{pub.citation}</p>
+                <div className="mt-1.5 font-sans text-[13px] text-[var(--editorial-muted)]">{pub.status}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="other-publications" className="mb-16">
+          <h2 className="mb-6 font-serif text-2xl font-semibold leading-8 text-[var(--editorial-ink)]">
+            Other Research
+          </h2>
+          <p className="mb-3 font-serif text-lg leading-7 text-[var(--editorial-ink)]">
+            Publications from prior research areas outside my current focus.
+          </p>
+          <Link href="/research" className={`font-sans text-[13px] ${linkClass}`}>
+            [View prior research]
+          </Link>
         </section>
       </main>
     </div>

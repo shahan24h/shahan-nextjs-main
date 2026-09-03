@@ -14,10 +14,27 @@ const researchAreas = [
   'NLP & Text Classification',
   'Healthcare Analytics',
   'Public Health Data',
-  'Email Security',
+  'Computational Social Science',
 ];
 
 const publications = [
+  {
+    year: '2026',
+    title: 'Federated Learning and Synthetic Data for Vaccination Equity Research',
+    venue: 'CSS2026 — The Computational Social Science Society of the Americas 2026 International Conference',
+    type: 'Conference Paper',
+    status: 'Accepted',
+  },
+  {
+    year: 'TBD',
+    title: 'Community Interventions and Cross-Platform Response',
+    venue: 'Working Paper',
+    type: 'Working Paper',
+    status: 'Working Paper',
+  },
+];
+
+const priorResearch = [
   {
     year: '2023',
     title: 'Synthesis and characterization study',
@@ -31,13 +48,6 @@ const publications = [
     venue: 'Optics & Laser Technology',
     type: 'Journal Article',
     status: 'Published',
-  },
-  {
-    year: 'TBD',
-    title: 'Federated learning + synthetic data for vaccination equity research',
-    venue: 'Manuscript in preparation',
-    type: 'Journal Article',
-    status: 'In preparation',
   },
 ];
 
@@ -101,6 +111,15 @@ const activeProjects = [
     link: 'https://www.opendatabd.com',
     external: true,
   },
+  {
+    year: 'Active',
+    title: 'MechanicBD',
+    type: 'Startup',
+    description:
+      'A service-based platform for vehicle maintenance and repair services in Sylhet, Bangladesh. End-to-end tech stack built by the team I lead.',
+    link: 'https://www.mechanicbdsyl.com',
+    external: true,
+  },
 ];
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
@@ -130,7 +149,7 @@ export default function ResearchPage() {
                 <Stat value={publications.length} label="Publications" />
                 <Stat value={presentations.length} label="Presentations" />
                 <Stat value={studies.length} label="Studies" />
-                <Stat value={activeProjects.length} label="Initiative" />
+                <Stat value={priorResearch.length} label="Prior Research" />
               </div>
             </div>
           </div>
@@ -273,6 +292,26 @@ export default function ResearchPage() {
                     <ExternalLink className="h-4 w-4" />
                   </Link>
                 </div>
+              ))}
+            </div>
+          </ResearchSection>
+
+          <ResearchSection
+            icon={<FileText className="h-5 w-5" />}
+            label="Category 05"
+            title="Prior research"
+            description="Earlier publications from prior research domains outside my current focus."
+            count={priorResearch.length}
+          >
+            <div className="divide-y divide-[#ded6c9] overflow-hidden rounded-3xl border border-[#ded6c9] bg-[#fffdf8]">
+              {priorResearch.map((pub) => (
+                <ListItem
+                  key={`${pub.year}-${pub.title}`}
+                  year={pub.year}
+                  type={pub.type}
+                  title={pub.title}
+                  meta={`${pub.venue} · ${pub.status}`}
+                />
               ))}
             </div>
           </ResearchSection>
