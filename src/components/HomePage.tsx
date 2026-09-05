@@ -8,6 +8,7 @@ const focusAreas = [
   'Adversarial Machine Learning & Robustness',
   'Healthcare & Public Health Analytics',
   'Data Infrastructure for Social Research',
+  'Social and Information Networks (Currently Presenting)',
 ];
 
 const studies = [
@@ -73,24 +74,26 @@ const projects = [
 const linkClass =
   'text-[var(--editorial-accent)] underline decoration-[var(--editorial-accent)]/40 underline-offset-4 transition-opacity hover:opacity-70';
 
+const featureSettings = "[font-feature-settings:'cv02','cv03','cv04','cv11']";
+
 const HomePage = () => {
   return (
     <div className="min-h-screen bg-[var(--editorial-bg)]">
       <div className="mx-auto max-w-[800px] px-5 pb-16 pt-14 md:px-0">
-        <h1 className="mb-1 font-serif text-[32px] font-bold leading-[40px] text-[var(--editorial-ink)]">
+        <h1 className={`mb-1 font-sans text-[32px] font-bold leading-[40px] text-[var(--editorial-ink)] ${featureSettings}`}>
           Shahan Ahmed
         </h1>
-        <p className="font-sans text-[13px] font-medium uppercase tracking-[0.08em] text-[var(--editorial-muted)]">
+        <p className={`font-sans text-[13px] font-medium uppercase tracking-[0.08em] text-[var(--editorial-muted)] ${featureSettings}`}>
           Computational Social Science &middot; Natural Language Processing &middot; Healthcare Analytics
         </p>
       </div>
 
       <main className="mx-auto max-w-[800px] px-5 pb-24 md:px-0">
         <section id="about" className="mb-16">
-          <p className="mb-6 font-serif text-xl leading-8 text-[var(--editorial-ink)]">
+          <p className={`mb-6 font-sans text-xl leading-8 text-[var(--editorial-ink)] ${featureSettings}`}>
             M.A. in Social Research and Data Analysis, currently controlling large-scale data workflows at Conduent, preparing for a Ph.D. in 2027 in Information Systems or Computational Social Science.
           </p>
-          <div className="flex flex-wrap gap-x-4 gap-y-2 font-sans text-sm">
+          <div className={`flex flex-wrap gap-x-4 gap-y-2 font-sans text-sm ${featureSettings}`}>
             <Link href="/contact" className={linkClass}>Contact</Link>
             <span className="text-[var(--editorial-border)]">&bull;</span>
             <a href="https://scholar.google.com/citations?hl=en&user=ROqm-4EAAAAJ" target="_blank" rel="noopener noreferrer" className={linkClass}>
@@ -112,12 +115,13 @@ const HomePage = () => {
         <hr className="mb-16 border-t border-[var(--editorial-border)]" />
 
         <section className="mb-16">
-          <h2 className="mb-6 font-serif text-2xl font-semibold leading-8 text-[var(--editorial-ink)]">
+          <h2 className={`mb-6 font-sans text-2xl font-semibold leading-8 text-[var(--editorial-ink)] ${featureSettings}`}>
             Research Interests
           </h2>
+
           <ul className="flex flex-col gap-2">
             {focusAreas.map((area) => (
-              <li key={area} className="flex items-start font-serif text-lg leading-7 text-[var(--editorial-ink)]">
+              <li key={area} className={`flex items-start font-sans text-lg leading-7 text-[var(--editorial-ink)] ${featureSettings}`}>
                 <span className="mr-3 text-[var(--editorial-ink)]">&bull;</span>
                 <span>{area}</span>
               </li>
@@ -128,18 +132,18 @@ const HomePage = () => {
         <hr className="mb-16 border-t border-[var(--editorial-border)]" />
 
         <section id="research" className="mb-16">
-          <h2 className="mb-6 font-serif text-2xl font-semibold leading-8 text-[var(--editorial-ink)]">
+          <h2 className={`mb-6 font-sans text-2xl font-semibold leading-8 text-[var(--editorial-ink)] ${featureSettings}`}>
             Research
           </h2>
           <div className="flex flex-col gap-10">
             {studies.map((study) => (
               <div key={study.title}>
-                <h3 className="mb-1 font-serif text-xl font-bold text-[var(--editorial-ink)]">
+                <h3 className={`mb-1 font-sans text-xl font-bold text-[var(--editorial-ink)] ${featureSettings}`}>
                   {study.title}
                 </h3>
-                <div className="mb-2.5 font-sans text-[13px] text-[var(--editorial-muted)]">{study.meta}</div>
-                <p className="mb-2.5 font-serif text-lg leading-7 text-[var(--editorial-ink)]">{study.desc}</p>
-                <Link href={study.href} className={`font-sans text-[13px] ${linkClass}`}>
+                <div className={`mb-2.5 font-sans text-[13px] text-[var(--editorial-muted)] ${featureSettings}`}>{study.meta}</div>
+                <p className={`mb-2.5 font-sans text-lg leading-7 text-[var(--editorial-ink)] ${featureSettings}`}>{study.desc}</p>
+                <Link href={study.href} className={`font-sans text-[13px] ${linkClass} ${featureSettings}`}>
                   [View results]
                 </Link>
               </div>
@@ -150,7 +154,7 @@ const HomePage = () => {
         <hr className="mb-16 border-t border-[var(--editorial-border)]" />
 
         <section id="projects">
-          <h2 className="mb-6 font-serif text-2xl font-semibold leading-8 text-[var(--editorial-ink)]">
+          <h2 className={`mb-6 font-sans text-2xl font-semibold leading-8 text-[var(--editorial-ink)] ${featureSettings}`}>
             Ongoing Projects
           </h2>
           <ul className="flex flex-col">
@@ -159,7 +163,7 @@ const HomePage = () => {
                 key={proj.name}
                 className="flex items-baseline justify-between gap-4 border-b border-[var(--editorial-border)] py-3.5"
               >
-                <span className="font-serif text-lg leading-7 text-[var(--editorial-ink)]">
+                <span className={`font-sans text-lg leading-7 text-[var(--editorial-ink)] ${featureSettings}`}>
                   <b>{proj.name}:</b> {proj.desc}
                 </span>
                 {proj.external ? (
@@ -167,12 +171,12 @@ const HomePage = () => {
                     href={proj.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`whitespace-nowrap font-sans text-[13px] ${linkClass}`}
+                    className={`whitespace-nowrap font-sans text-[13px] ${linkClass} ${featureSettings}`}
                   >
                     [{proj.label}]
                   </a>
                 ) : (
-                  <Link href={proj.href} className={`whitespace-nowrap font-sans text-[13px] ${linkClass}`}>
+                  <Link href={proj.href} className={`whitespace-nowrap font-sans text-[13px] ${linkClass} ${featureSettings}`}>
                     [{proj.label}]
                   </Link>
                 )}
@@ -184,27 +188,27 @@ const HomePage = () => {
         <hr className="mb-16 border-t border-[var(--editorial-border)]" />
 
         <section id="publications" className="mb-16">
-          <h2 className="mb-6 font-serif text-2xl font-semibold leading-8 text-[var(--editorial-ink)]">
+          <h2 className={`mb-6 font-sans text-2xl font-semibold leading-8 text-[var(--editorial-ink)] ${featureSettings}`}>
             Publications &amp; Presentations
           </h2>
           <div className="flex flex-col gap-7">
             {researchPublications.map((pub) => (
               <div key={pub.citation} className="border-l-2 border-[var(--editorial-ink)] pl-4">
-                <p className="font-serif text-lg leading-7 text-[var(--editorial-ink)]">{pub.citation}</p>
-                <div className="mt-1.5 font-sans text-[13px] text-[var(--editorial-muted)]">{pub.status}</div>
+                <p className={`font-sans text-lg leading-7 text-[var(--editorial-ink)] ${featureSettings}`}>{pub.citation}</p>
+                <div className={`mt-1.5 font-sans text-[13px] text-[var(--editorial-muted)] ${featureSettings}`}>{pub.status}</div>
               </div>
             ))}
           </div>
         </section>
 
         <section id="other-publications" className="mb-16">
-          <h2 className="mb-6 font-serif text-2xl font-semibold leading-8 text-[var(--editorial-ink)]">
+          <h2 className={`mb-6 font-sans text-2xl font-semibold leading-8 text-[var(--editorial-ink)] ${featureSettings}`}>
             Other Research
           </h2>
-          <p className="mb-3 font-serif text-lg leading-7 text-[var(--editorial-ink)]">
+          <p className={`mb-3 font-sans text-lg leading-7 text-[var(--editorial-ink)] ${featureSettings}`}>
             Publications from prior research areas outside my current focus.
           </p>
-          <Link href="/research" className={`font-sans text-[13px] ${linkClass}`}>
+          <Link href="/research" className={`font-sans text-[13px] ${linkClass} ${featureSettings}`}>
             [View prior research]
           </Link>
         </section>
