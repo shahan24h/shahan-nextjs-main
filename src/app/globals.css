@@ -135,8 +135,8 @@ p {
 
 /* ─── Selection ─────────────────────────────────────────── */
 ::selection {
-  background-color: rgba(107, 78, 255, 0.18);
-  color: #191919;
+  background-color: color-mix(in srgb, var(--editorial-accent) 35%, transparent);
+  color: var(--editorial-ink);
 }
 
 /* ─── Gradient text utility ─────────────────────────────── */
