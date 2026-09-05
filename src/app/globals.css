@@ -7,32 +7,14 @@ html {
   scroll-behavior: smooth;
   text-rendering: optimizeLegibility;
   -webkit-text-size-adjust: 100%;
-  font-size: 17px;
 }
 
 body {
-  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';
-  font-weight: 400;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--editorial-bg);
-  color: var(--editorial-ink);
-  line-height: 1.7;
-  letter-spacing: -0.005em;
-}
-
-/* ─── Font faces ─────────────────────────────────────────── */
-@font-face {
-  font-family: 'Lora';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Lora'), local('Lora-Regular'), url(https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap) format('woff2');
-}
-
-@layer utilities {
-  .font-serif { font-family: var(--font-lora), Lora, Georgia, 'Times New Roman', serif; }
-  .font-sans { font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; }
 }
 
 /* ─── Editorial Typography System ───────────────────────── */
@@ -46,27 +28,6 @@ body {
   --editorial-chip: #f0e9dc;
   --editorial-accent: #6b4eff;
   --editorial-header-bg: rgba(247, 244, 237, 0.85);
-
-  /* Typography scale */
-  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
-  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
-
-  --text-xs: 0.75rem;
-  --text-sm: 0.8125rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-  --text-5xl: 3rem;
-
-  --leading-tight: 1.2;
-  --leading-snug: 1.35;
-  --leading-normal: 1.6;
-  --leading-relaxed: 1.75;
-  --leading-loose: 1.9;
 }
 
 :root.dark {
@@ -82,47 +43,18 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
   text-wrap: balance;
-  color: var(--editorial-ink);
 }
 
 h1 {
-  font-size: var(--text-4xl);
-  font-weight: 700;
-  line-height: var(--leading-tight);
-  letter-spacing: -0.03em;
-}
-
-h2 {
-  font-size: var(--text-2xl);
-  font-weight: 600;
-  line-height: var(--leading-snug);
-  letter-spacing: -0.02em;
-}
-
-h3 {
-  font-size: var(--text-xl);
-  font-weight: 600;
-  line-height: var(--leading-snug);
-  letter-spacing: -0.015em;
+  letter-spacing: -0.045em;
 }
 
 p {
-  line-height: var(--leading-relaxed);
-  color: var(--editorial-muted);
-}
-
-a {
-  color: var(--editorial-accent);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-  transition: opacity 0.2s ease;
-}
-
-a:hover {
-  opacity: 0.75;
+  line-height: 1.75;
 }
 
 .editorial-page {
@@ -131,7 +63,7 @@ a:hover {
 }
 
 .editorial-container {
-  max-width: 68rem;
+  max-width: 72rem;
   margin-left: auto;
   margin-right: auto;
   padding-left: 1.5rem;
@@ -139,41 +71,36 @@ a:hover {
 }
 
 .editorial-eyebrow {
-  font-family: var(--font-sans);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.15em;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--editorial-soft);
 }
 
 .editorial-title {
-  font-family: var(--font-serif);
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: var(--leading-tight);
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1.04;
   color: var(--editorial-ink);
 }
 
 .editorial-subtitle {
-  font-family: var(--font-sans);
-  font-size: var(--text-lg);
-  line-height: var(--leading-relaxed);
+  font-size: 1.125rem;
+  line-height: 1.8;
   color: var(--editorial-muted);
 }
 
 .editorial-card {
   border: 1px solid var(--editorial-border);
   background: var(--editorial-card);
-  border-radius: 1.25rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  border-radius: 1.5rem;
+  box-shadow: 0 1px 2px rgba(25, 25, 25, 0.04);
 }
 
 .editorial-pill {
-  font-family: var(--font-sans);
-  font-size: var(--text-xs);
-  font-weight: 500;
-  border: 1px solid var(--editorial-border);
+  border: 1px solid #d0c7b8;
   background: var(--editorial-chip);
   color: var(--editorial-muted);
   border-radius: 999px;
@@ -181,12 +108,12 @@ a:hover {
 
 /* ─── KaTeX equation styling ────────────────────────────── */
 .katex {
-  font-weight: 600 !important;
-  color: var(--editorial-ink);
+  font-weight: 700 !important;
+  color: #191919;
 }
 
 .katex * {
-  font-weight: 600 !important;
+  font-weight: 700 !important;
 }
 
 .katex-display {
@@ -196,7 +123,7 @@ a:hover {
   border: 1px solid var(--editorial-border);
   border-radius: 1rem;
   background: var(--editorial-card);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 2px rgba(25, 25, 25, 0.04);
 }
 
 .katex-display > .katex {

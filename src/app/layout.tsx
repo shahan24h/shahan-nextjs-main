@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Lora } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import './globals.css'
 import 'katex/dist/katex.min.css'
 import { AuthProvider } from '@/contexts/AuthContext'
@@ -14,13 +14,6 @@ const inter = Inter({
   variable: '--font-inter',
   display: 'swap',
   weight: ['300', '400', '500', '600', '700', '800'],
-})
-
-const lora = Lora({
-  subsets: ['latin'],
-  variable: '--font-lora',
-  display: 'swap',
-  weight: ['400', '500', '600', '700'],
 })
 
 export const metadata: Metadata = genMeta({
@@ -57,7 +50,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en-US" className={`${inter.variable} ${lora.variable}`}>
+    <html lang="en-US" className={inter.variable}>
       <head>
         <script
           dangerouslySetInnerHTML={{
