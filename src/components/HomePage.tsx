@@ -1,5 +1,5 @@
 "use client";
-
+import EventsCarousel from "@/components/EventsCarousel";
 import Link from "next/link";
 
 const focusAreas = [
@@ -278,6 +278,9 @@ const HomePage = () => {
 
         <hr className="mb-16 border-t border-[var(--editorial-border)]" />
 
+	<EventsCarousel />
+
+	<hr className="mb-16 border-t border-[var(--editorial-border)]" />
         <section id="projects" className="mb-16">
           <h2
             className={`mb-6 font-sans text-2xl font-semibold leading-8 text-[var(--editorial-ink)] ${featureSettings}`}
